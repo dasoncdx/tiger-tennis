@@ -25,7 +25,6 @@ const config = {
   copy: {
     patterns: [
       { from: 'static/index.html', to: 'dist/index.html' },
-      { from: 'static/Caddyfile', to: 'dist/Caddyfile' },
     ],
     options: {},
   },
