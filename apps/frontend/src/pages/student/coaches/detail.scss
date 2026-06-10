@@ -1,0 +1,151 @@
+.coach-detail-page {
+  background: #F5F5F5;
+  min-height: 100vh;
+  padding-bottom: 100px;
+}
+
+.cd-nav {
+  background: #FFFFFF;
+  padding: calc(env(safe-area-inset-top) + 12px) 16px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-bottom: 1px solid #F0F0F0;
+}
+
+.cd-back {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.cd-nav-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+/* 教练信息头部 */
+.cd-hero {
+  background: #FFFFFF;
+  padding: 24px 16px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.cd-avatar-wrap {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.cd-avatar-img {
+  width: 80px;
+  height: 80px;
+}
+
+.cd-avatar-fallback {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1B4332, #2D6A4F);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text {
+    font-size: 32px;
+    font-weight: 700;
+    color: white;
+  }
+}
+
+.cd-basic { flex: 1; }
+
+.cd-name {
+  display: block;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 4px;
+}
+
+.cd-exp {
+  display: block;
+  font-size: 15px;
+  color: #9A9A9A;
+  margin-bottom: 8px;
+}
+
+.cd-tag-row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cd-tag {
+  background: #D8F3DC;
+  border-radius: 6px;
+  padding: 3px 10px;
+
+  text {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1B4332;
+  }
+}
+
+/* 简介 */
+.cd-section {
+  background: #FFFFFF;
+  padding: 18px 16px;
+  margin-bottom: 10px;
+}
+
+.cd-section-title {
+  display: block;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 10px;
+}
+
+.cd-bio {
+  font-size: 16px;
+  color: #4A4A4A;
+  line-height: 1.7;
+}
+
+/* 底部预约按钮 */
+.cd-footer {
+  position: fixed;
+  bottom: env(safe-area-inset-bottom, 0px);
+  left: 0;
+  right: 0;
+  background: #FFFFFF;
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid #F0F0F0;
+}
+
+.cd-btn-book {
+  height: 54px;
+  background: #1B4332;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  text {
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+  }
+}

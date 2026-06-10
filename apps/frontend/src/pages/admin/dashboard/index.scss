@@ -6,9 +6,9 @@
   display: flex; justify-content: space-between; align-items: center;
 }
 
-.admin-title { display: block; font-size: 11px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; }
-.admin-name { display: block; font-size: 20px; font-weight: 700; color: white; margin-top: 3px; }
-.logout { font-size: 14px; color: rgba(255,255,255,0.7); cursor: pointer; }
+.admin-title { display: block; font-size: 14px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; }
+.admin-name { display: block; font-size: 26px; font-weight: 700; color: white; margin-top: 3px; }
+.logout { font-size: 18px; color: rgba(255,255,255,0.7); cursor: pointer; }
 
 .stats-grid {
   display: flex; gap: 10px; margin-top: 20px;
@@ -20,8 +20,8 @@
   border-top: 3px solid var(--color-primary);
 }
 
-.stat-num { display: block; font-size: 26px; font-weight: 700; color: var(--color-primary); }
-.stat-label { display: block; font-size: 11px; color: var(--color-gray-400); margin-top: 4px; }
+.stat-num { display: block; font-size: 34px; font-weight: 700; color: var(--color-primary); }
+.stat-label { display: block; font-size: 14px; color: var(--color-gray-400); margin-top: 4px; }
 
 .menu-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
@@ -35,12 +35,12 @@
 }
 
 .menu-icon-wrap { position: relative; }
-.menu-icon { font-size: 28px; }
+.menu-icon { font-size: 36px; }
 .menu-badge {
   position: absolute; top: -4px; right: -6px;
   background: #FF3B30; border-radius: 8px; min-width: 16px; height: 16px;
   padding: 0 4px; display: flex; align-items: center; justify-content: center;
-  text { font-size: 10px; font-weight: 700; color: white; }
+  text { font-size: 13px; font-weight: 700; color: white; }
 }
 
-.menu-label { font-size: 13px; font-weight: 500; color: var(--color-gray-900); }
+.menu-label { font-size: 17px; font-weight: 500; color: var(--color-gray-900); }

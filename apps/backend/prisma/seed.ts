@@ -312,6 +312,48 @@ async function main() {
     },
   })
 
+  // ─── 暑假班（限期班示例）───────────────────
+  const summerClass = await prisma.groupClass.upsert({
+    where: { id: 'class-summer-2025' },
+    update: {},
+    create: {
+      id: 'class-summer-2025',
+      name: '2025暑假集训班',
+      coachId: coach1.id,
+      classType: GroupClassType.FIXED,
+      venue: '天河网球中心1号场',
+      ntrpRange: '2.5-3.5',
+      capacity: 8,
+      lessonsPerSession: 1,
+      description: '5天集训，上午技术训练+下午实战对抗，适合2.5-3.5段位学员，最后一天举办内部小型赛',
+      status: 'ACTIVE',
+    },
+  })
+
+  // 暑假班课次：7月5日-7月10日（5天）
+  const summerDates = [
+    { day: 5, sh: 9, eh: 11 },
+    { day: 6, sh: 9, eh: 11 },
+    { day: 7, sh: 9, eh: 11 },
+    { day: 8, sh: 9, eh: 11 },
+    { day: 9, sh: 9, eh: 11 },
+  ]
+  for (const sd of summerDates) {
+    const start = new Date(2025, 6, sd.day, sd.sh, 0, 0, 0)  // 7月（0-indexed=6）
+    const end = new Date(2025, 6, sd.day, sd.eh, 0, 0, 0)
+    await prisma.groupSession.upsert({
+      where: { id: `summer-session-${sd.day}` },
+      update: {},
+      create: {
+        id: `summer-session-${sd.day}`,
+        classId: summerClass.id,
+        startTime: start,
+        endTime: end,
+        venue: '天河网球中心1号场',
+      },
+    })
+  }
+
   // ─── 赛事 ─────────────────────────────────
   const eventDate = new Date(now)
   eventDate.setDate(eventDate.getDate() + 30)
@@ -324,6 +366,7 @@ async function main() {
     create: {
       id: 'tournament-1',
       name: 'Tiger杯第一届段位挑战赛',
+      venue: '广州芳村体育中心网球场—8号场',
       eventDate,
       registrationDeadline: deadline,
       capacity: 32,

@@ -9,18 +9,18 @@
 .search-bar { margin-bottom: 10px; }
 .search-input {
   width: 100%; height: 40px; background: var(--color-gray-100);
-  border-radius: 10px; padding: 0 12px; font-size: 14px;
+  border-radius: 10px; padding: 0 12px; font-size: 18px;
 }
 
 .filter-bar { display: flex; gap: 8px; }
 .filter-btn {
   padding: 5px 12px; border-radius: 20px;
   background: var(--color-gray-100); cursor: pointer;
-  text { font-size: 13px; color: var(--color-gray-600); }
+  text { font-size: 17px; color: var(--color-gray-600); }
   &.active { background: var(--color-primary-light-bg); text { color: var(--color-primary); font-weight: 600; } }
 }
 
-.list-count { display: block; font-size: 12px; color: var(--color-gray-400); margin: 12px 0 8px; }
+.list-count { display: block; font-size: 16px; color: var(--color-gray-400); margin: 12px 0 8px; }
 
 .student-row {
   background: white; border-radius: 12px; padding: 12px 14px;
@@ -32,13 +32,13 @@
   width: 40px; height: 40px; border-radius: 50%;
   background: linear-gradient(135deg, #1B4332, #2D6A4F);
   display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  text { font-size: 15px; font-weight: 700; color: white; }
+  text { font-size: 20px; font-weight: 700; color: white; }
 }
 
 .student-info { flex: 1; }
-.student-name { display: block; font-size: 14px; font-weight: 600; color: var(--color-gray-900); }
-.student-phone { display: block; font-size: 12px; color: var(--color-gray-400); margin-top: 2px; }
-.chevron { color: var(--color-gray-200); font-size: 16px; }
+.student-name { display: block; font-size: 18px; font-weight: 600; color: var(--color-gray-900); }
+.student-phone { display: block; font-size: 16px; color: var(--color-gray-400); margin-top: 2px; }
+.chevron { color: var(--color-gray-200); font-size: 21px; }
 
 .status-dot {
   width: 7px; height: 7px; border-radius: 50%; margin-bottom: 4px;
@@ -55,8 +55,8 @@
   position: sticky; top: 0; z-index: 10;
 }
 
-.back { font-size: 20px; color: var(--color-primary); cursor: pointer; }
-.detail-title { font-size: 17px; font-weight: 600; color: var(--color-gray-900); }
+.back { font-size: 26px; color: var(--color-primary); cursor: pointer; }
+.detail-title { font-size: 22px; font-weight: 600; color: var(--color-gray-900); }
 
 .info-card { margin-top: 16px; }
 .card { background: white; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
@@ -65,19 +65,19 @@
   display: flex; justify-content: space-between; align-items: center;
   padding: 10px 0; border-bottom: 1px solid var(--color-border);
   &:last-child { border-bottom: none; }
-  text { font-size: 14px; color: var(--color-gray-900); }
+  text { font-size: 18px; color: var(--color-gray-900); }
 }
 
-.info-label { font-size: 14px; color: var(--color-gray-600) !important; }
+.info-label { font-size: 18px; color: var(--color-gray-600) !important; }
 
 .status-actions { display: flex; align-items: center; gap: 10px; }
 .status-tag {
-  font-size: 12px; font-weight: 500; padding: 3px 8px; border-radius: 10px;
+  font-size: 16px; font-weight: 500; padding: 3px 8px; border-radius: 10px;
   &.active { background: var(--color-primary-light-bg); color: var(--color-primary); }
   &.pending { background: #FFF3CD; color: #FF9500; }
 }
 
-.btn-text { font-size: 13px; color: var(--color-primary); cursor: pointer; }
+.btn-text { font-size: 17px; color: var(--color-primary); cursor: pointer; }
 
 // 课时包
 .pkg-row {
@@ -85,12 +85,12 @@
   margin-bottom: 7px;
 }
 
-.pkg-name { display: block; font-size: 14px; font-weight: 600; color: var(--color-gray-900); }
-.pkg-expire { display: block; font-size: 11px; color: var(--color-gray-400); margin-top: 2px; }
-.pkg-remain { display: block; font-size: 22px; font-weight: 700; color: var(--color-primary); text-align: right; }
-.pkg-unit { display: block; font-size: 11px; color: var(--color-gray-400); text-align: right; }
+.pkg-name { display: block; font-size: 18px; font-weight: 600; color: var(--color-gray-900); }
+.pkg-expire { display: block; font-size: 14px; color: var(--color-gray-400); margin-top: 2px; }
+.pkg-remain { display: block; font-size: 29px; font-weight: 700; color: var(--color-primary); text-align: right; }
+.pkg-unit { display: block; font-size: 14px; color: var(--color-gray-400); text-align: right; }
 
-.empty-text { display: block; font-size: 13px; color: var(--color-gray-400); text-align: center; margin: 12px 0; }
+.empty-text { display: block; font-size: 17px; color: var(--color-gray-400); text-align: center; margin: 12px 0; }
 
 // 套餐发放Modal
 .modal-mask {
@@ -104,15 +104,15 @@
   padding: 20px 20px 40px; width: 100%;
 }
 
-.modal-title { display: block; font-size: 17px; font-weight: 700; color: var(--color-gray-900); margin-bottom: 16px; }
+.modal-title { display: block; font-size: 22px; font-weight: 700; color: var(--color-gray-900); margin-bottom: 16px; }
 
 .form-item { margin-bottom: 14px; }
-.form-label { display: block; font-size: 13px; color: var(--color-gray-600); margin-bottom: 8px; }
+.form-label { display: block; font-size: 17px; color: var(--color-gray-600); margin-bottom: 8px; }
 
 .template-option {
   padding: 12px 14px; border-radius: 10px; margin-bottom: 8px;
   border: 1.5px solid var(--color-border); cursor: pointer;
-  text { font-size: 14px; color: var(--color-gray-900); }
+  text { font-size: 18px; color: var(--color-gray-900); }
   &.selected { border-color: var(--color-primary); background: var(--color-primary-light-bg); }
 }
 
@@ -120,5 +120,5 @@
   display: flex; justify-content: flex-end; gap: 16px; margin-top: 20px;
 }
 
-.modal-cancel { font-size: 15px; color: var(--color-gray-400); cursor: pointer; }
-.modal-confirm { font-size: 15px; font-weight: 600; color: var(--color-primary); cursor: pointer; }
+.modal-cancel { font-size: 20px; color: var(--color-gray-400); cursor: pointer; }
+.modal-confirm { font-size: 20px; font-weight: 600; color: var(--color-primary); cursor: pointer; }

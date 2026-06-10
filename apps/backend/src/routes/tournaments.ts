@@ -20,9 +20,9 @@ tournaments.get('/', async (c) => {
 // POST /api/v1/tournaments
 tournaments.post('/', authMiddleware, requireRole(Role.ADMIN), async (c) => {
   const body = await c.req.json()
-  const { name, eventDate, registrationDeadline, capacity, rules, grouping, coverUrl, status } = body
+  const { name, eventDate, registrationDeadline, capacity, venue, rules, grouping, coverUrl, status } = body
   const t = await prisma.tournament.create({
-    data: { name, eventDate: new Date(eventDate), registrationDeadline: new Date(registrationDeadline), capacity: Number(capacity), rules, grouping, coverUrl, status: status || 'DRAFT' },
+    data: { name, eventDate: new Date(eventDate), registrationDeadline: new Date(registrationDeadline), capacity: Number(capacity), venue, rules, grouping, coverUrl, status: status || 'DRAFT' },
   })
   return c.json({ success: true, data: { id: t.id } }, 201)
 })
@@ -30,10 +30,10 @@ tournaments.post('/', authMiddleware, requireRole(Role.ADMIN), async (c) => {
 // PATCH /api/v1/tournaments/:id
 tournaments.patch('/:id', authMiddleware, requireRole(Role.ADMIN), async (c) => {
   const body = await c.req.json()
-  const { name, eventDate, registrationDeadline, capacity, rules, grouping, coverUrl, status } = body
+  const { name, eventDate, registrationDeadline, capacity, venue, rules, grouping, coverUrl, status } = body
   await prisma.tournament.update({
     where: { id: c.req.param('id') },
-    data: { name, eventDate: eventDate ? new Date(eventDate) : undefined, registrationDeadline: registrationDeadline ? new Date(registrationDeadline) : undefined, capacity: capacity ? Number(capacity) : undefined, rules, grouping, coverUrl, status },
+    data: { name, eventDate: eventDate ? new Date(eventDate) : undefined, registrationDeadline: registrationDeadline ? new Date(registrationDeadline) : undefined, capacity: capacity ? Number(capacity) : undefined, venue, rules, grouping, coverUrl, status },
   })
   return c.json({ success: true, data: { message: '更新成功' } })
 })
@@ -145,3 +145,13 @@ tournaments.post('/:id/diagnosis/send', authMiddleware, requireRole(Role.ADMIN),
 })
 
 export default tournaments
+
+// GET /api/v1/tournaments/:id/my-entry — 查询当前用户的报名记录
+tournaments.get('/:id/my-entry', authMiddleware, async (c) => {
+  const { userId: studentId } = c.get('user')
+  const entry = await prisma.tournamentEntry.findUnique({
+    where: { tournamentId_studentId: { tournamentId: c.req.param('id'), studentId } },
+  })
+  if (!entry) return c.json({ success: false, error: '未报名' }, 404)
+  return c.json({ success: true, data: entry })
+})

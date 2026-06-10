@@ -47,14 +47,14 @@
 .hero-name {
   display: block;
   color: white;
-  font-size: 19px;
+  font-size: 25px;
   font-weight: 700;
 }
 
 .hero-sub {
   display: block;
   color: rgba(255,255,255,0.75);
-  font-size: 13px;
+  font-size: 17px;
   margin-top: 3px;
 }
 
@@ -98,13 +98,13 @@
 }
 
 .section-title {
-  font-size: 18px;
+  font-size: 23px;
   font-weight: 600;
   color: #1A1A1A;
 }
 
 .section-more {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 500;
 }
 
@@ -122,7 +122,7 @@
 
 .pkg-label {
   display: block;
-  font-size: 13px;
+  font-size: 17px;
   opacity: 0.7;
   margin-bottom: 3px;
   color: white;
@@ -130,7 +130,7 @@
 
 .pkg-name {
   display: block;
-  font-size: 17px;
+  font-size: 22px;
   font-weight: 600;
   color: white;
 }
@@ -143,14 +143,14 @@
   margin-top: 6px;
 
   text {
-    font-size: 13px;
+    font-size: 17px;
     color: white;
   }
 }
 
 .pkg-expire {
   display: block;
-  font-size: 13px;
+  font-size: 17px;
   opacity: 0.6;
   margin-top: 6px;
   color: white;
@@ -162,7 +162,7 @@
 
 .pkg-num {
   display: block;
-  font-size: 38px;
+  font-size: 49px;
   font-weight: 700;
   line-height: 1;
   color: white;
@@ -170,7 +170,7 @@
 
 .pkg-unit {
   display: block;
-  font-size: 13px;
+  font-size: 17px;
   opacity: 0.7;
   margin-top: 2px;
   color: white;
@@ -201,14 +201,14 @@
 
 .upcoming-title {
   display: block;
-  font-size: 15px;
+  font-size: 20px;
   font-weight: 600;
   color: #1A1A1A;
 }
 
 .upcoming-meta {
   display: block;
-  font-size: 13px;
+  font-size: 17px;
   color: #9A9A9A;
   margin-top: 2px;
 }
@@ -230,7 +230,7 @@
 
 .login-guide-text {
   display: block;
-  font-size: 15px;
+  font-size: 20px;
   color: #4A4A4A;
   margin-bottom: 14px;
   line-height: 1.5;
@@ -247,7 +247,7 @@
 
   text {
     color: white;
-    font-size: 17px;
+    font-size: 22px;
     font-weight: 600;
   }
 }
@@ -289,7 +289,7 @@
 }
 
 .coach-name {
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 600;
   color: #1A1A1A;
   text-align: center;
@@ -300,4 +300,49 @@
   padding: 2px 7px;
   border-radius: 6px;
   margin-top: 4px;
+}
+
+/* 公告 */
+.notice-item {
+  background: white;
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.notice-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #1B4332;
+  margin-top: 7px;
+  flex-shrink: 0;
+}
+
+.notice-body { flex: 1; }
+
+.notice-title {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin-bottom: 5px;
+}
+
+.notice-content {
+  display: block;
+  font-size: 14px;
+  color: #4A4A4A;
+  line-height: 1.6;
+}
+
+.notice-date {
+  display: block;
+  font-size: 12px;
+  color: #9A9A9A;
+  margin-top: 5px;
 }

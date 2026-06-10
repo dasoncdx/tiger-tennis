@@ -327,6 +327,7 @@ model Tournament {
   eventDate            DateTime
   registrationDeadline DateTime
   capacity             Int
+  venue                String?          // 比赛地点
   rules                String
   grouping             String?
   coverUrl             String?

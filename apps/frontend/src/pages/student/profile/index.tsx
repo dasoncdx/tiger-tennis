@@ -225,7 +225,7 @@ export default function ProfilePage() {
             </View>
           </View>
 
-          <View className='menu-item' onClick={() => Taro.navigateTo({ url: '/pages/student/tournament/index' })}>
+          <View className='menu-item' onClick={() => Taro.navigateTo({ url: '/pages/student/my-tournaments/index' })}>
             <View className='menu-item-left'>
               <View className='menu-icon-wrap'>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">

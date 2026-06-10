@@ -25,14 +25,14 @@
 }
 
 .avatar-char {
-  font-size: 26px;
+  font-size: 34px;
   font-weight: 700;
   color: #FFFFFF;
 }
 
 .profile-header-info { flex: 1; }
-.profile-name { display: block; font-size: 20px; font-weight: 700; color: #FFFFFF; }
-.profile-phone { display: block; font-size: 14px; color: rgba(255,255,255,0.65); margin-top: 4px; }
+.profile-name { display: block; font-size: 26px; font-weight: 700; color: #FFFFFF; }
+.profile-phone { display: block; font-size: 18px; color: rgba(255,255,255,0.65); margin-top: 4px; }
 
 .profile-content {
   padding: 16px 16px 0;
@@ -51,14 +51,14 @@
 
 .ntrp-card-label {
   display: block;
-  font-size: 13px;
+  font-size: 17px;
   color: rgba(255,255,255,0.65);
   margin-bottom: 6px;
 }
 
 .ntrp-card-level {
   display: block;
-  font-size: 36px;
+  font-size: 47px;
   font-weight: 800;
   color: #FFFFFF;
   line-height: 1;
@@ -71,8 +71,8 @@
 }
 
 .ntrp-score-item { text-align: center; }
-.ntrp-score-num { display: block; font-size: 17px; font-weight: 700; color: #FFFFFF; }
-.ntrp-score-label { display: block; font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+.ntrp-score-num { display: block; font-size: 22px; font-weight: 700; color: #FFFFFF; }
+.ntrp-score-label { display: block; font-size: 16px; color: rgba(255,255,255,0.6); margin-top: 2px; }
 
 /* 课时包 */
 .profile-section {
@@ -91,14 +91,14 @@
 }
 
 .ps-title {
-  font-size: 17px;
+  font-size: 22px;
   font-weight: 700;
   color: #1A1A1A;
 }
 
 .empty-hint {
   display: block;
-  font-size: 14px;
+  font-size: 18px;
   color: #9A9A9A;
   text-align: center;
   padding: 8px 0;
@@ -130,8 +130,8 @@
   &.group { background: #40916C; }
 }
 
-.pkg-row-name { display: block; font-size: 15px; font-weight: 600; color: #1A1A1A; }
-.pkg-row-expire { display: block; font-size: 13px; color: #9A9A9A; margin-top: 2px; }
+.pkg-row-name { display: block; font-size: 20px; font-weight: 600; color: #1A1A1A; }
+.pkg-row-expire { display: block; font-size: 17px; color: #9A9A9A; margin-top: 2px; }
 
 .pkg-row-right {
   display: flex;
@@ -139,8 +139,8 @@
   gap: 2px;
 }
 
-.pkg-row-num { font-size: 24px; font-weight: 800; color: #1B4332; }
-.pkg-row-unit { font-size: 13px; color: #9A9A9A; }
+.pkg-row-num { font-size: 31px; font-weight: 800; color: #1B4332; }
+.pkg-row-unit { font-size: 17px; color: #9A9A9A; }
 
 /* 菜单 */
 .menu-list {
@@ -179,7 +179,7 @@
 }
 
 .menu-item-label {
-  font-size: 16px;
+  font-size: 21px;
   font-weight: 500;
   color: #1A1A1A;
 }
@@ -190,7 +190,7 @@
   gap: 6px;
 }
 
-.menu-chevron { font-size: 20px; color: #C8C8C8; }
+.menu-chevron { font-size: 26px; color: #C8C8C8; }
 
 .unread-badge {
   background: #FF3B30;
@@ -201,7 +201,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  text { font-size: 13px; font-weight: 700; color: #FFFFFF; }
+  text { font-size: 17px; font-weight: 700; color: #FFFFFF; }
 }
 
 /* 退出 */
@@ -216,7 +216,7 @@
   cursor: pointer;
   margin-bottom: 16px;
 
-  text { font-size: 16px; font-weight: 500; color: #FF3B30; }
+  text { font-size: 21px; font-weight: 500; color: #FF3B30; }
 }
 
 /* 未登录 */
@@ -229,7 +229,7 @@
   justify-content: center;
   margin-bottom: 12px;
   cursor: pointer;
-  text { color: #FFFFFF; font-size: 17px; font-weight: 600; }
+  text { color: #FFFFFF; font-size: 22px; font-weight: 600; }
 }
 
 .btn-outline-block {
@@ -240,7 +240,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  text { color: #1B4332; font-size: 17px; font-weight: 500; }
+  text { color: #1B4332; font-size: 22px; font-weight: 500; }
 }
 
 /* 通知页 */
@@ -264,13 +264,13 @@
 
 .sub-nav-title {
   flex: 1;
-  font-size: 18px;
+  font-size: 23px;
   font-weight: 700;
   color: #1A1A1A;
 }
 
 .mark-all-btn {
-  font-size: 14px;
+  font-size: 18px;
   color: #1B4332;
   cursor: pointer;
 }
@@ -306,20 +306,20 @@
   margin-bottom: 4px;
 }
 
-.notif-title { font-size: 15px; font-weight: 600; color: #1A1A1A; }
+.notif-title { font-size: 20px; font-weight: 600; color: #1A1A1A; }
 
 .notif-type-tag {
   background: #D8F3DC;
   border-radius: 6px;
   padding: 1px 6px;
-  text { font-size: 12px; color: #1B4332; }
+  text { font-size: 16px; color: #1B4332; }
 }
 
-.notif-content { display: block; font-size: 14px; color: #4A4A4A; line-height: 1.55; }
-.notif-time { display: block; font-size: 13px; color: #9A9A9A; margin-top: 4px; }
+.notif-content { display: block; font-size: 18px; color: #4A4A4A; line-height: 1.55; }
+.notif-time { display: block; font-size: 17px; color: #9A9A9A; margin-top: 4px; }
 
 .empty-center {
   padding: 60px 0;
   text-align: center;
-  text { font-size: 15px; color: #9A9A9A; }
+  text { font-size: 20px; color: #9A9A9A; }
 }
