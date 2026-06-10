@@ -1,13 +1,19 @@
-.tab-header {
+.booking-page {
+  background: #F5F5F5;
+  height: 100vh;
   display: flex;
-  background: white;
-  border-bottom: 1px solid var(--color-border);
-  position: sticky;
-  top: 0;
-  z-index: 10;
+  flex-direction: column;
 }
 
-.tab-header-item {
+/* 主Tab */
+.main-tabs {
+  display: flex;
+  background: #FFFFFF;
+  border-bottom: 1px solid #F0F0F0;
+  flex-shrink: 0;
+}
+
+.main-tab {
   flex: 1;
   height: 48px;
   display: flex;
@@ -15,171 +21,372 @@
   justify-content: center;
   font-size: 15px;
   font-weight: 500;
-  color: var(--color-gray-400);
+  color: #9A9A9A;
   border-bottom: 2px solid transparent;
+  cursor: pointer;
 
   &.active {
-    color: var(--color-primary);
-    border-bottom-color: var(--color-primary);
-    font-weight: 600;
+    color: #1B4332;
+    border-bottom-color: #1B4332;
+    font-weight: 700;
   }
 }
 
-.section-title-row { margin: 16px 0 10px; }
+.booking-scroll {
+  flex: 1;
+  overflow-y: auto;
+}
 
+.section-wrap {
+  padding: 16px 16px 0;
+}
+
+.step-hint {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #4A4A4A;
+  margin-bottom: 10px;
+}
+
+/* 教练列表 */
 .coach-list-item {
-  background: white;
+  background: #FFFFFF;
   border-radius: 12px;
   padding: 14px;
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  cursor: pointer;
 }
 
-.coach-list-avatar {
-  width: 44px;
-  height: 44px;
+.coach-li-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.coach-li-img {
+  width: 48px;
+  height: 48px;
+}
+
+.coach-li-fallback {
+  width: 48px;
+  height: 48px;
   border-radius: 50%;
   background: linear-gradient(135deg, #1B4332, #2D6A4F);
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
-  overflow: hidden;
+  text { font-size: 18px; font-weight: 700; color: white; }
 }
 
-.coach-list-avatar-img { width: 44px; height: 44px; }
-.coach-list-avatar-text { font-size: 17px; font-weight: 700; color: white; }
+.coach-li-info { flex: 1; }
+.coach-li-name { display: block; font-size: 16px; font-weight: 600; color: #1A1A1A; }
+.coach-li-spec { display: block; font-size: 13px; color: #9A9A9A; margin-top: 3px; }
+.chevron { color: #C8C8C8; font-size: 20px; }
 
-.coach-list-info { flex: 1; }
-.coach-list-name { display: block; font-size: 15px; font-weight: 600; color: var(--color-gray-900); }
-.coach-list-spec { display: block; font-size: 12px; color: var(--color-gray-400); margin-top: 2px; }
-.chevron { color: var(--color-gray-200); font-size: 18px; }
-
-.step-header {
+/* 已选教练栏 */
+.selected-coach-bar {
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 12px 14px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin: 16px 0 12px;
+  gap: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-.back-btn { font-size: 16px; color: var(--color-primary); cursor: pointer; }
-.step-title { font-size: 16px; font-weight: 600; color: var(--color-gray-900); }
+.selected-coach-name {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1A1A1A;
+}
 
+.change-btn {
+  font-size: 13px;
+  color: #1B4332;
+  cursor: pointer;
+}
+
+/* 日期横滑 */
+.date-scroll {
+  white-space: nowrap;
+  overflow-x: auto;
+  display: flex;
+  margin-bottom: 4px;
+}
+
+.date-item {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  height: 60px;
+  border-radius: 12px;
+  margin-right: 8px;
+  background: #FFFFFF;
+  flex-shrink: 0;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+
+  &.active {
+    background: #1B4332;
+    .date-week, .date-num { color: #FFFFFF; }
+  }
+}
+
+.date-week {
+  font-size: 11px;
+  color: #9A9A9A;
+  font-weight: 400;
+}
+
+.date-num {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-top: 2px;
+}
+
+/* 时段网格 */
 .time-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
-  margin-top: 12px;
+  margin-top: 8px;
 }
 
 .time-slot {
-  height: 52px;
-  border-radius: 8px;
-  background: var(--color-gray-100);
+  height: 48px;
+  border-radius: 10px;
+  background: #FFFFFF;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
 
-  text { font-size: 11px; color: var(--color-gray-900); line-height: 1.4; }
-
-  &.selected {
-    background: var(--color-primary);
-    text { color: white; }
+  &.active {
+    background: #1B4332;
+    .time-slot-text { color: #FFFFFF; }
   }
 
   &.disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
+    background: #F5F5F5;
+    .time-slot-text { color: #C8C8C8; }
   }
 }
 
-.confirm-panel {
-  margin-top: 20px;
-  background: white;
-  border-radius: 12px;
-  padding: 16px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+.time-slot-text {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1A1A;
 }
 
-.confirm-label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: var(--color-gray-900); }
-.empty-text { display: block; font-size: 13px; color: var(--color-gray-400); margin-bottom: 12px; }
+.empty-slots {
+  padding: 24px;
+  text-align: center;
+  text { font-size: 13px; color: #9A9A9A; }
+}
+
+/* 确认卡 */
+.confirm-card {
+  background: #FFFFFF;
+  border-radius: 14px;
+  padding: 16px;
+  margin-top: 16px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin-bottom: 16px;
+}
+
+.confirm-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #1A1A1A;
+  margin-bottom: 12px;
+}
+
+.empty-text {
+  display: block;
+  font-size: 13px;
+  color: #9A9A9A;
+  margin-bottom: 12px;
+}
 
 .pkg-option {
-  padding: 12px;
-  border-radius: 8px;
-  border: 1.5px solid var(--color-border);
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1.5px solid #F0F0F0;
   margin-bottom: 8px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   cursor: pointer;
 
-  text { font-size: 14px; color: var(--color-gray-900); }
-  &.selected { border-color: var(--color-primary); background: var(--color-primary-light-bg); }
+  &.selected {
+    border-color: #1B4332;
+    background: #F0F9F4;
+  }
 }
 
-.pkg-remain { font-size: 12px; color: var(--color-gray-400) !important; }
+.pkg-option-name { font-size: 14px; font-weight: 600; color: #1A1A1A; }
+.pkg-option-remain { font-size: 13px; color: #9A9A9A; }
 
-.btn-primary {
+.btn-confirm {
+  height: 50px;
+  background: #1B4332;
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 48px;
-  background: var(--color-primary);
-  border-radius: 14px;
   margin-top: 14px;
   cursor: pointer;
 
-  text { color: white; font-size: 15px; font-weight: 600; }
-  &.disabled { background: var(--color-gray-200); text { color: var(--color-gray-400); } }
+  text { color: #FFFFFF; font-size: 15px; font-weight: 600; }
+
+  &.disabled {
+    background: #E0E0E0;
+    text { color: #9A9A9A; }
+  }
 }
 
-// 团课卡片
+/* 团课 */
 .group-card {
-  background: white;
+  background: #FFFFFF;
   border-radius: 12px;
   padding: 14px 16px;
   margin-bottom: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-.group-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.group-name { font-size: 15px; font-weight: 600; color: var(--color-gray-900); }
-.group-meta, .group-time, .group-capacity { display: block; font-size: 12px; color: var(--color-gray-400); margin-top: 3px; }
+.group-card-hd {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
 
-.btn-outline {
+.group-name { font-size: 16px; font-weight: 700; color: #1A1A1A; }
+
+.group-badge {
+  padding: 3px 10px;
+  border-radius: 20px;
+  text { font-size: 12px; font-weight: 500; }
+
+  &.open { background: #D8F3DC; text { color: #1B4332; } }
+  &.full { background: #F0F0F0; text { color: #9A9A9A; } }
+}
+
+.group-meta {
+  display: block;
+  font-size: 13px;
+  color: #4A4A4A;
+  margin-top: 4px;
+}
+
+.btn-enroll {
+  height: 42px;
+  border: 1.5px solid #1B4332;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 40px;
-  border: 1.5px solid var(--color-primary);
-  border-radius: 10px;
   margin-top: 12px;
   cursor: pointer;
 
-  text { color: var(--color-primary); font-size: 14px; font-weight: 500; }
+  text { font-size: 14px; font-weight: 600; color: #1B4332; }
 }
 
-// 我的预约
+/* 我的预约 */
+.section-title-text {
+  display: block;
+  font-size: 17px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 12px;
+}
+
+.status-tabs {
+  white-space: nowrap;
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.status-tab {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: 20px;
+  margin-right: 8px;
+  background: #FFFFFF;
+  flex-shrink: 0;
+  cursor: pointer;
+  text { font-size: 13px; font-weight: 500; color: #4A4A4A; }
+
+  &.active {
+    background: #1B4332;
+    text { color: #FFFFFF; }
+  }
+}
+
 .booking-item {
-  background: white;
+  background: #FFFFFF;
   border-radius: 12px;
-  padding: 13px 14px;
+  padding: 14px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  border-left: 3px solid var(--color-primary);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-.booking-info { flex: 1; }
-.booking-title { display: block; font-size: 14px; font-weight: 600; color: var(--color-gray-900); }
-.booking-meta { display: block; font-size: 12px; color: var(--color-gray-400); margin-top: 2px; }
-.cancel-btn { font-size: 12px; color: var(--color-error); cursor: pointer; }
+.booking-date-col {
+  width: 44px;
+  text-align: center;
+  flex-shrink: 0;
+}
 
-.empty { padding: 24px; text-align: center; text { font-size: 13px; color: var(--color-gray-400); } }
+.booking-month { display: block; font-size: 11px; color: #9A9A9A; }
+.booking-day { display: block; font-size: 22px; font-weight: 800; color: #1B4332; line-height: 1.1; }
+.booking-weekday { display: block; font-size: 11px; color: #9A9A9A; }
+
+.booking-info-col { flex: 1; }
+.booking-name { display: block; font-size: 15px; font-weight: 600; color: #1A1A1A; }
+.booking-time { display: block; font-size: 13px; color: #4A4A4A; margin-top: 3px; }
+.booking-venue { display: block; font-size: 12px; color: #9A9A9A; margin-top: 2px; }
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  text { font-size: 12px; font-weight: 500; }
+
+  &.badge-pending { background: #FFF3CD; text { color: #FF9500; } }
+  &.badge-confirmed { background: #D8F3DC; text { color: #1B4332; } }
+  &.badge-completed { background: #F0F0F0; text { color: #9A9A9A; } }
+  &.badge-cancelled { background: #FFE8E8; text { color: #FF3B30; } }
+}
+
+.cancel-text {
+  display: block;
+  font-size: 12px;
+  color: #FF3B30;
+  text-align: right;
+  margin-top: 6px;
+  cursor: pointer;
+}
+
+.empty-wrap {
+  padding: 32px;
+  text-align: center;
+  text { font-size: 14px; color: #9A9A9A; }
+}

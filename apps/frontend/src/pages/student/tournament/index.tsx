@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { tournamentApi } from '../../../services/api'
 import { useAuthStore } from '../../../stores/auth'
-import './index.scss'
-
-// tournamentApi 挂载到 api.ts 里，这里从 api 导入
 import { request } from '../../../services/api'
+import TabBar from '../../../components/TabBar'
+import './index.scss'
 
 const tournamentsApi = {
   list: (status?: string) => {
@@ -110,6 +108,7 @@ export default function TournamentPage() {
           </View>
         ))}
       </View>
+      <TabBar active='tournament' role='STUDENT' />
     </View>
   )
 }

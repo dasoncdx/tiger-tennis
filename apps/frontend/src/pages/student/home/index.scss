@@ -1,23 +1,30 @@
-.hero {
-  position: relative;
-  height: 200px;
-  overflow: hidden;
+.home-page {
+  background: #F5F5F5;
+  min-height: 100vh;
+  padding-bottom: calc(56px + env(safe-area-inset-bottom));
 }
 
-.hero-swiper, .hero-placeholder {
+/* Hero Banner */
+.hero {
+  position: relative;
   width: 100%;
-  height: 200px;
+  height: 220px;
+  overflow: hidden;
+  background: linear-gradient(150deg, #1B4332 0%, #2D6A4F 50%, #40916C 100%);
+}
+
+.hero-swiper, .hero-fallback {
+  width: 100%;
+  height: 220px;
 }
 
 .hero-img {
   width: 100%;
-  height: 200px;
+  height: 220px;
 }
 
-.hero-bg {
-  width: 100%;
-  height: 200px;
-  background: linear-gradient(150deg, #1B4332 0%, #2D6A4F 50%, #40916C 100%);
+.hero-fallback {
+  background: linear-gradient(150deg, #1B4332 0%, #2D6A4F 55%, #40916C 100%);
 }
 
 .hero-overlay {
@@ -25,76 +32,175 @@
   bottom: 0;
   left: 0;
   right: 0;
-  padding: 20px 16px 14px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, transparent 100%);
+  padding: 24px 16px 16px;
+  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%);
 }
 
 .hero-name {
   display: block;
-  color: white;
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: 0.5px;
 }
 
 .hero-sub {
   display: block;
-  color: rgba(255, 255, 255, 0.75);
   font-size: 12px;
+  color: rgba(255,255,255,0.75);
   margin-top: 3px;
 }
 
-.section {
-  margin-top: 20px;
+/* 内容区 */
+.home-content {
+  padding: 16px 16px 0;
 }
 
-// 课时卡
-.pkg-card {
-  background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%);
+/* 登录卡片 */
+.login-card {
+  background: #1B4332;
   border-radius: 14px;
-  padding: 16px 18px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.login-card-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.login-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-hint {
+  display: block;
+  font-size: 17px;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+.login-hint-sub {
+  display: block;
+  font-size: 12px;
+  color: rgba(255,255,255,0.65);
+  margin-top: 2px;
+}
+
+.login-arrow {
+  font-size: 22px;
+  color: rgba(255,255,255,0.5);
+}
+
+/* 快捷入口 */
+.quick-actions {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.quick-item {
+  flex: 1;
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 16px 8px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  cursor: pointer;
+}
+
+.quick-icon {
+  width: 44px;
+  height: 44px;
+  background: #D8F3DC;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quick-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1A1A1A;
+}
+
+/* Section */
+.section {
+  margin-bottom: 20px;
+}
+
+.section-hd {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: white;
+  margin-bottom: 10px;
 }
 
-.pkg-label {
-  display: block;
+.section-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1A1A1A;
+}
+
+.section-more {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1B4332;
+}
+
+/* 课时卡 */
+.pkg-card {
+  background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%);
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.pkg-tag-text {
+  display: inline-block;
   font-size: 11px;
-  opacity: 0.7;
-  margin-bottom: 3px;
+  color: rgba(255,255,255,0.7);
+  background: rgba(255,255,255,0.15);
+  padding: 2px 8px;
+  border-radius: 20px;
+  margin-bottom: 6px;
 }
 
 .pkg-name {
   display: block;
-  font-size: 16px;
-  font-weight: 600;
-}
-
-.pkg-tag {
-  display: inline-block;
-  background: rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-  padding: 2px 8px;
-  margin-top: 6px;
-
-  text {
-    font-size: 11px;
-    color: white;
-  }
+  font-size: 17px;
+  font-weight: 700;
+  color: #FFFFFF;
 }
 
 .pkg-expire {
   display: block;
   font-size: 11px;
-  opacity: 0.6;
+  color: rgba(255,255,255,0.55);
   margin-top: 6px;
 }
 
 .pkg-num {
   display: block;
-  font-size: 38px;
-  font-weight: 700;
+  font-size: 42px;
+  font-weight: 800;
+  color: #FFFFFF;
   line-height: 1;
   text-align: right;
 }
@@ -102,41 +208,36 @@
 .pkg-unit {
   display: block;
   font-size: 12px;
-  opacity: 0.7;
+  color: rgba(255,255,255,0.65);
   text-align: right;
+  margin-top: 3px;
 }
 
-// 即将上课
-.upcoming-card {
-  background: white;
+/* 即将上课 */
+.upcoming-item {
+  background: #FFFFFF;
   border-radius: 12px;
   padding: 13px 14px;
   display: flex;
   align-items: center;
-  gap: 11px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-  margin-bottom: 7px;
+  gap: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   border-left: 3px solid #1B4332;
-
-  &--first {
-    border-left-color: #FF9500;
-  }
 }
 
-.upcoming-icon {
-  width: 38px;
-  height: 38px;
-  border-radius: 9px;
-  background: var(--color-primary-light-bg);
+.upcoming-icon-wrap {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
   flex-shrink: 0;
+}
 
-  &--first {
-    background: #FFF3E0;
-  }
+.upcoming-icon-emoji {
+  font-size: 18px;
 }
 
 .upcoming-info {
@@ -145,108 +246,91 @@
 
 .upcoming-title {
   display: block;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 600;
-  color: var(--color-gray-900);
+  color: #1A1A1A;
 }
 
 .upcoming-meta {
   display: block;
   font-size: 12px;
-  color: var(--color-gray-400);
-  margin-top: 2px;
+  color: #9A9A9A;
+  margin-top: 3px;
 }
 
-// 未登录引导
-.login-guide {
-  background: white;
-  border-radius: 16px;
-  padding: 20px 16px;
-  text-align: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+.upcoming-badge {
+  padding: 4px 10px;
+  border-radius: 20px;
+  flex-shrink: 0;
 }
 
-.login-guide-text {
-  display: block;
-  font-size: 14px;
-  color: var(--color-gray-600);
-  margin-bottom: 14px;
-  line-height: 1.5;
-}
-
-.btn-primary {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 48px;
-  background: var(--color-primary);
-  border-radius: 14px;
-
-  text {
-    color: white;
-    font-size: 16px;
-    font-weight: 600;
-  }
-}
-
-// 教练横滑
-.coaches-scroll {
+/* 教练横滑 */
+.coaches-row {
   white-space: nowrap;
+  overflow-x: auto;
+  display: flex;
 }
 
 .coach-card {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  background: white;
+  background: #FFFFFF;
   border-radius: 12px;
-  padding: 13px 11px;
-  min-width: 108px;
+  padding: 14px 12px 12px;
+  min-width: 96px;
   margin-right: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
   vertical-align: top;
+  cursor: pointer;
+  flex-shrink: 0;
 }
 
-.coach-avatar {
-  width: 50px;
-  height: 50px;
+.coach-avatar-wrap {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.coach-avatar-img {
+  width: 56px;
+  height: 56px;
+}
+
+.coach-avatar-fallback {
+  width: 56px;
+  height: 56px;
   border-radius: 50%;
   background: linear-gradient(135deg, #1B4332, #2D6A4F);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 7px;
-  overflow: hidden;
 }
 
-.coach-avatar-img {
-  width: 50px;
-  height: 50px;
-}
-
-.coach-avatar-text {
-  font-size: 19px;
+.coach-avatar-char {
+  font-size: 22px;
   font-weight: 700;
-  color: white;
+  color: #FFFFFF;
 }
 
 .coach-name {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  color: var(--color-gray-900);
+  color: #1A1A1A;
+  text-align: center;
 }
 
 .coach-tag {
-  display: inline-block;
-  background: var(--color-primary-light-bg);
+  margin-top: 5px;
+  background: #D8F3DC;
   border-radius: 6px;
-  padding: 2px 7px;
-  margin-top: 4px;
+  padding: 2px 8px;
 
   text {
     font-size: 10px;
     font-weight: 500;
-    color: var(--color-primary);
+    color: #1B4332;
   }
 }

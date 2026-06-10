@@ -1,3 +1,4 @@
+import TabBar from '../../../components/TabBar'
 import { useState, useEffect } from 'react'
 import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
@@ -34,6 +35,7 @@ export default function CoachProfile() {
           </View>
         </View>
       </View>
+      <TabBar active="profile" role="COACH" />
     </View>
   )
 }

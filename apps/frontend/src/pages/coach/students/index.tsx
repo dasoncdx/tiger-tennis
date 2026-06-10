@@ -1,3 +1,4 @@
+import TabBar from '../../../components/TabBar'
 import { useState, useEffect } from 'react'
 import { View, Text, Input } from '@tarojs/components'
 import Taro from '@tarojs/taro'
