@@ -21,10 +21,10 @@ function getNext14Days() {
   return days
 }
 
-// 生成当天 6:00-22:00 全时段（每小时一格）
+// 生成当天 6:00-21:00 时段（每小时一格，共15个，3列×5行）
 function getDaySlots(date: Date) {
   const slots = []
-  for (let h = 6; h < 22; h++) {
+  for (let h = 6; h < 21; h++) {
     const start = new Date(date)
     start.setHours(h, 0, 0, 0)
     const end = new Date(date)

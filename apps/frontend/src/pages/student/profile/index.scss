@@ -32,7 +32,7 @@
 
 .profile-header-info { flex: 1; }
 .profile-name { display: block; font-size: 20px; font-weight: 700; color: #FFFFFF; }
-.profile-phone { display: block; font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 4px; }
+.profile-phone { display: block; font-size: 14px; color: rgba(255,255,255,0.65); margin-top: 4px; }
 
 .profile-content {
   padding: 16px 16px 0;
@@ -51,7 +51,7 @@
 
 .ntrp-card-label {
   display: block;
-  font-size: 11px;
+  font-size: 13px;
   color: rgba(255,255,255,0.65);
   margin-bottom: 6px;
 }
@@ -71,8 +71,8 @@
 }
 
 .ntrp-score-item { text-align: center; }
-.ntrp-score-num { display: block; font-size: 16px; font-weight: 700; color: #FFFFFF; }
-.ntrp-score-label { display: block; font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 2px; }
+.ntrp-score-num { display: block; font-size: 17px; font-weight: 700; color: #FFFFFF; }
+.ntrp-score-label { display: block; font-size: 12px; color: rgba(255,255,255,0.6); margin-top: 2px; }
 
 /* 课时包 */
 .profile-section {
@@ -91,14 +91,14 @@
 }
 
 .ps-title {
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 700;
   color: #1A1A1A;
 }
 
 .empty-hint {
   display: block;
-  font-size: 13px;
+  font-size: 14px;
   color: #9A9A9A;
   text-align: center;
   padding: 8px 0;
@@ -130,8 +130,8 @@
   &.group { background: #40916C; }
 }
 
-.pkg-row-name { display: block; font-size: 14px; font-weight: 600; color: #1A1A1A; }
-.pkg-row-expire { display: block; font-size: 11px; color: #9A9A9A; margin-top: 2px; }
+.pkg-row-name { display: block; font-size: 15px; font-weight: 600; color: #1A1A1A; }
+.pkg-row-expire { display: block; font-size: 13px; color: #9A9A9A; margin-top: 2px; }
 
 .pkg-row-right {
   display: flex;
@@ -140,7 +140,7 @@
 }
 
 .pkg-row-num { font-size: 24px; font-weight: 800; color: #1B4332; }
-.pkg-row-unit { font-size: 12px; color: #9A9A9A; }
+.pkg-row-unit { font-size: 13px; color: #9A9A9A; }
 
 /* 菜单 */
 .menu-list {
@@ -179,7 +179,7 @@
 }
 
 .menu-item-label {
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 500;
   color: #1A1A1A;
 }
@@ -201,7 +201,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  text { font-size: 11px; font-weight: 700; color: #FFFFFF; }
+  text { font-size: 13px; font-weight: 700; color: #FFFFFF; }
 }
 
 /* 退出 */
@@ -216,7 +216,7 @@
   cursor: pointer;
   margin-bottom: 16px;
 
-  text { font-size: 15px; font-weight: 500; color: #FF3B30; }
+  text { font-size: 16px; font-weight: 500; color: #FF3B30; }
 }
 
 /* 未登录 */
@@ -229,7 +229,7 @@
   justify-content: center;
   margin-bottom: 12px;
   cursor: pointer;
-  text { color: #FFFFFF; font-size: 16px; font-weight: 600; }
+  text { color: #FFFFFF; font-size: 17px; font-weight: 600; }
 }
 
 .btn-outline-block {
@@ -240,7 +240,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  text { color: #1B4332; font-size: 16px; font-weight: 500; }
+  text { color: #1B4332; font-size: 17px; font-weight: 500; }
 }
 
 /* 通知页 */
@@ -264,13 +264,13 @@
 
 .sub-nav-title {
   flex: 1;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 700;
   color: #1A1A1A;
 }
 
 .mark-all-btn {
-  font-size: 13px;
+  font-size: 14px;
   color: #1B4332;
   cursor: pointer;
 }
@@ -306,20 +306,20 @@
   margin-bottom: 4px;
 }
 
-.notif-title { font-size: 14px; font-weight: 600; color: #1A1A1A; }
+.notif-title { font-size: 15px; font-weight: 600; color: #1A1A1A; }
 
 .notif-type-tag {
   background: #D8F3DC;
   border-radius: 6px;
   padding: 1px 6px;
-  text { font-size: 10px; color: #1B4332; }
+  text { font-size: 12px; color: #1B4332; }
 }
 
-.notif-content { display: block; font-size: 13px; color: #4A4A4A; line-height: 1.55; }
-.notif-time { display: block; font-size: 11px; color: #9A9A9A; margin-top: 4px; }
+.notif-content { display: block; font-size: 14px; color: #4A4A4A; line-height: 1.55; }
+.notif-time { display: block; font-size: 13px; color: #9A9A9A; margin-top: 4px; }
 
 .empty-center {
   padding: 60px 0;
   text-align: center;
-  text { font-size: 14px; color: #9A9A9A; }
+  text { font-size: 15px; color: #9A9A9A; }
 }

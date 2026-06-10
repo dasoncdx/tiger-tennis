@@ -52,6 +52,7 @@ export default function LoginPage() {
             value={phone}
             onInput={(e) => setPhone(e.detail.value)}
             maxlength={11}
+            style='line-height: 54px; height: 54px;'
           />
         </View>
         <View className='form-item'>
@@ -62,6 +63,7 @@ export default function LoginPage() {
             placeholder='请输入密码'
             value={password}
             onInput={(e) => setPassword(e.detail.value)}
+            style='line-height: 54px; height: 54px;'
           />
         </View>
 
