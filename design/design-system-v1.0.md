@@ -231,13 +231,38 @@ font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
 ### 5.11 底部导航栏（Tab Bar）
 
 ```
-高度：56px + 底部安全区
+高度：56px + 底部安全区 env(safe-area-inset-bottom)
 背景：#FFFFFF
 顶部线：1px solid #F0F0F0
-图标：22px
-未激活：图标+文字均 #BBBBBB
-激活：图标+文字均 #1B4332
+阴影：0 -2px 12px rgba(0,0,0,0.06)
+图标：26×26px SVG，strokeWidth 1.8
+未激活：图标 stroke + 文字均 #BBBBBB
+激活：图标 stroke + 文字均 #1B4332，文字 font-weight 600
 ```
+
+**iOS/Android 多端适配规则：**
+- 顶部安全区：`padding-top: env(safe-area-inset-top)`，所有有绿色背景的顶部区域必须加
+- 底部安全区：TabBar 高度 = `56px + env(safe-area-inset-bottom)`，页面 padding-bottom 同步
+- `viewport-fit=cover` 必须写入 index.html meta
+- 字体防缩放：`-webkit-text-size-adjust: 100%`
+- 防点击高亮：`-webkit-tap-highlight-color: transparent`
+- 防长按菜单：`-webkit-touch-callout: none`
+
+**学员端 Tab 定义：**
+| Tab | 图标描述 | 跳转页面 |
+|-----|---------|---------|
+| 首页 | 房子轮廓 | /pages/student/home/index |
+| 约课 | 日历+圆点 | /pages/student/booking/index |
+| 赛事 | 奖杯 | /pages/student/tournament/index |
+| 我的 | 人像 | /pages/student/profile/index |
+
+**教练端 Tab 定义：**
+| Tab | 图标描述 | 跳转页面 |
+|-----|---------|---------|
+| 首页 | 房子轮廓 | /pages/coach/home/index |
+| 课表 | 日历 | /pages/coach/schedule/index |
+| 学员 | 双人像 | /pages/coach/students/index |
+| 我的 | 人像 | /pages/coach/profile/index |
 
 ### 5.12 角标（Unread Badge）
 

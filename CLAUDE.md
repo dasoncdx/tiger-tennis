@@ -63,3 +63,43 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 ---
 
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
+
+---
+
+## 5. 项目专属规则（Tiger网球俱乐部）
+
+### 文档同步要求（强制）
+
+**每次改动代码后，必须同步更新相关文档，确保文档与实际应用完全吻合。**
+
+- **功能/交互变更** → 更新 `prd-v1.0.md` 对应章节
+- **样式/组件/布局变更** → 更新 `design/design-system-v1.0.md`
+- **架构/数据库/API变更** → 更新 `tech-design-v1.0.md`
+- **运营策略调整** → 更新 `tennis-op.md`
+
+判断依据：改了什么，就更新描述那件事的文档。若不确定，宁可多更新也不要漏更新。
+
+### 项目文档清单
+
+| 文件 | 用途 |
+|------|------|
+| `tennis-op.md` | 机构运营蓝图 |
+| `prd-v1.0.md` | 产品需求文档 |
+| `tech-design-v1.0.md` | 技术设计文档 |
+| `design/design-system-v1.0.md` | 设计规范 |
+
+### 前端构建规则
+
+- 前端构建必须在 `apps/frontend` 目录下运行，使用根目录的 taro：
+  ```
+  cd apps/frontend && /path/to/tennis/node_modules/.bin/taro build --type h5
+  ```
+- `dist/index.html` 和 `dist/Caddyfile` 不会被 taro 生成，每次构建后需手动确认存在
+- 构建产物需 `git add -f apps/frontend/dist` 强制提交
+
+### 多端适配规则
+
+- 所有顶部彩色背景区域必须加 `padding-top: env(safe-area-inset-top)`
+- 页面底部必须加 `padding-bottom: calc(56px + env(safe-area-inset-bottom))`
+- TabBar 组件在 `src/components/TabBar.tsx`，所有页面必须引入
+
