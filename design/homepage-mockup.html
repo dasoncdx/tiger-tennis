@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=375, initial-scale=1.0">
+<title>Tiger网球 - 首页样稿</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, "PingFang SC", "Helvetica Neue", sans-serif;
+    background: #E5E5EA;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 40px 20px;
+    gap: 40px;
+  }
+
+  .label {
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 12px;
+    font-family: -apple-system, sans-serif;
+  }
+
+  /* 手机外框 */
+  .phone {
+    width: 375px;
+    height: 812px;
+    background: #F5F5F5;
+    border-radius: 44px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.25), 0 0 0 1px rgba(0,0,0,0.08);
+    flex-shrink: 0;
+  }
+
+  .phone-inner {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+  }
+  .phone-inner::-webkit-scrollbar { display: none; }
+
+  /* 状态栏 */
+  .status-bar {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background: #3D5A2E;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .status-time { color: white; font-size: 15px; font-weight: 600; }
+  .status-icons { display: flex; gap: 6px; align-items: center; }
+  .status-icons span { color: white; font-size: 12px; }
+
+  /* Hero Banner */
+  .hero {
+    background: linear-gradient(160deg, #3D5A2E 0%, #5A7A43 60%, #4A6835 100%);
+    height: 220px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 20px 16px 24px;
+  }
+  .hero-bg-circle {
+    position: absolute;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.04);
+    top: -80px; right: -60px;
+  }
+  .hero-bg-circle2 {
+    position: absolute;
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+    bottom: -40px; left: 40px;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 4px 12px;
+    margin-bottom: 10px;
+    width: fit-content;
+  }
+  .hero-badge span { color: rgba(255,255,255,0.9); font-size: 11px; font-weight: 500; letter-spacing: 0.5px; }
+  .hero-title { color: white; font-size: 26px; font-weight: 700; line-height: 1.2; }
+  .hero-sub { color: rgba(255,255,255,0.7); font-size: 13px; margin-top: 4px; }
+
+  /* 内容区 */
+  .content { padding: 0 16px 100px; background: #F5F5F5; }
+
+  /* section */
+  .section { margin-top: 24px; }
+  .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  .section-title { font-size: 17px; font-weight: 600; color: #1A1A1A; }
+  .section-more { font-size: 13px; color: #3D5A2E; font-weight: 500; }
+
+  /* 套餐卡片 */
+  .package-card {
+    background: linear-gradient(135deg, #3D5A2E 0%, #5A7A43 100%);
+    border-radius: 16px;
+    padding: 18px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .package-left .pkg-label { font-size: 12px; opacity: 0.7; margin-bottom: 4px; }
+  .package-left .pkg-name { font-size: 17px; font-weight: 600; }
+  .package-left .pkg-type {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 2px 8px;
+    font-size: 11px;
+    margin-top: 6px;
+  }
+  .package-right { text-align: right; }
+  .package-right .pkg-num { font-size: 36px; font-weight: 700; line-height: 1; }
+  .package-right .pkg-unit { font-size: 13px; opacity: 0.7; margin-top: 2px; }
+  .pkg-expire { font-size: 11px; opacity: 0.6; margin-top: 8px; }
+
+  /* 即将上课 */
+  .upcoming-card {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    margin-bottom: 8px;
+    border-left: 3px solid #3D5A2E;
+  }
+  .upcoming-card.first {
+    border-left-color: #FF9500;
+  }
+  .upcoming-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: #EEF3E8;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .upcoming-card.first .upcoming-icon { background: #FFF3E0; }
+  .upcoming-info { flex: 1; }
+  .upcoming-title { font-size: 15px; font-weight: 600; color: #1A1A1A; }
+  .upcoming-meta { font-size: 12px; color: #9A9A9A; margin-top: 2px; }
+  .upcoming-badge {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 8px;
+    border-radius: 20px;
+    flex-shrink: 0;
+  }
+  .badge-confirmed { background: #EEF3E8; color: #3D5A2E; }
+  .badge-pending { background: #FFF3CD; color: #FF9500; }
+
+  /* 教练列表 */
+  .coaches-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .coaches-scroll::-webkit-scrollbar { display: none; }
+  .coach-card {
+    background: white;
+    border-radius: 12px;
+    padding: 14px;
+    min-width: 120px;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    flex-shrink: 0;
+  }
+  .coach-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    margin: 0 auto 8px;
+    background: linear-gradient(135deg, #3D5A2E, #5A7A43);
+    display: flex; align-items: center; justify-content: center;
+    color: white;
+    font-size: 20px;
+    font-weight: 700;
+  }
+  .coach-name { font-size: 14px; font-weight: 600; color: #1A1A1A; }
+  .coach-tag {
+    display: inline-block;
+    background: #EEF3E8;
+    color: #3D5A2E;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 6px;
+    margin-top: 4px;
+  }
+
+  /* 公告 */
+  .notice-card {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .notice-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: #3D5A2E;
+    margin-top: 6px;
+    flex-shrink: 0;
+  }
+  .notice-text { font-size: 14px; color: #4A4A4A; line-height: 1.5; }
+  .notice-time { font-size: 11px; color: #9A9A9A; margin-top: 4px; }
+
+  /* 底部Tab */
+  .tab-bar {
+    position: fixed;
+    bottom: 0;
+    width: 375px;
+    height: 82px;
+    background: white;
+    border-top: 1px solid #F0F0F0;
+    display: flex;
+    z-index: 200;
+  }
+  .tab-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    padding-bottom: 16px;
+    cursor: pointer;
+  }
+  .tab-icon { font-size: 22px; line-height: 1; }
+  .tab-label { font-size: 10px; color: #9A9A9A; }
+  .tab-item.active .tab-label { color: #3D5A2E; }
+  .tab-item.active .tab-icon { filter: none; }
+
+  /* SVG图标替代 */
+  .icon-home::before { content: "⊙"; }
+  .icon-book::before { content: "◷"; }
+  .icon-trophy::before { content: "⊕"; }
+  .icon-me::before { content: "◎"; }
+
+  /* 分割线 */
+  .divider { height: 8px; background: #F5F5F5; margin: 0 -16px; }
+
+  /* 反馈入口 */
+  .feedback-entry {
+    background: white;
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .feedback-left { display: flex; align-items: center; gap: 10px; }
+  .feedback-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #FF3B30;
+  }
+  .feedback-text { font-size: 14px; color: #1A1A1A; font-weight: 500; }
+  .feedback-sub { font-size: 12px; color: #9A9A9A; margin-top: 1px; }
+  .chevron { color: #C0C0C0; font-size: 16px; }
+
+</style>
+</head>
+<body>
+
+<!-- 状态A：已登录首页 -->
+<div>
+  <div class="label">学员端 · 首页（已登录）</div>
+  <div class="phone">
+    <div class="phone-inner">
+
+      <!-- 状态栏 -->
+      <div class="status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons">
+          <span>●●●</span>
+          <span>WiFi</span>
+          <span>■</span>
+        </div>
+      </div>
+
+      <!-- Hero -->
+      <div class="hero">
+        <div class="hero-bg-circle"></div>
+        <div class="hero-bg-circle2"></div>
+        <div class="hero-badge"><span>TIGER TENNIS CLUB</span></div>
+        <div class="hero-title">Tiger 网球俱乐部</div>
+        <div class="hero-sub">广州 · 专业网球培训</div>
+      </div>
+
+      <!-- 内容 -->
+      <div class="content">
+
+        <!-- 我的套餐 -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">我的课时</span>
+            <span class="section-more">全部 ›</span>
+          </div>
+          <div class="package-card">
+            <div class="package-left">
+              <div class="pkg-label">当前套餐</div>
+              <div class="pkg-name">私教训练卡</div>
+              <div class="pkg-type">私教课</div>
+              <div class="pkg-expire">有效期至 2025.09.30</div>
+            </div>
+            <div class="package-right">
+              <div class="pkg-num">7</div>
+              <div class="pkg-unit">节可用</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 即将上课 -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">即将上课</span>
+            <span class="section-more">查看全部 ›</span>
+          </div>
+          <div class="upcoming-card first">
+            <div class="upcoming-icon">🎾</div>
+            <div class="upcoming-info">
+              <div class="upcoming-title">私教课 · 黄教练</div>
+              <div class="upcoming-meta">明天 · 14:00–15:00 · 1号球场</div>
+            </div>
+            <div class="upcoming-badge badge-confirmed">已确认</div>
+          </div>
+          <div class="upcoming-card">
+            <div class="upcoming-icon">👥</div>
+            <div class="upcoming-info">
+              <div class="upcoming-title">3.0进阶班 · 周三</div>
+              <div class="upcoming-meta">06/11 · 19:00–20:30</div>
+            </div>
+            <div class="upcoming-badge badge-pending">待确认</div>
+          </div>
+        </div>
+
+        <!-- 月度反馈 -->
+        <div class="section">
+          <div class="feedback-entry">
+            <div class="feedback-left">
+              <div class="feedback-dot"></div>
+              <div>
+                <div class="feedback-text">黄教练发布了本月反馈</div>
+                <div class="feedback-sub">点击查看训练评价</div>
+              </div>
+            </div>
+            <div class="chevron">›</div>
+          </div>
+        </div>
+
+        <!-- 教练 -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">我们的教练</span>
+            <span class="section-more">全部 ›</span>
+          </div>
+          <div class="coaches-scroll">
+            <div class="coach-card">
+              <div class="coach-avatar">黄</div>
+              <div class="coach-name">黄教练</div>
+              <div class="coach-tag">正手专项</div>
+            </div>
+            <div class="coach-card">
+              <div class="coach-avatar" style="background: linear-gradient(135deg, #5A7A43, #7A9A63);">李</div>
+              <div class="coach-name">李教练</div>
+              <div class="coach-tag">发球专项</div>
+            </div>
+            <div class="coach-card">
+              <div class="coach-avatar" style="background: linear-gradient(135deg, #2A3E1F, #3D5A2E);">陈</div>
+              <div class="coach-name">陈教练</div>
+              <div class="coach-tag">体能训练</div>
+            </div>
+            <div class="coach-card">
+              <div class="coach-avatar" style="background: linear-gradient(135deg, #4A6835, #6A8A55);">王</div>
+              <div class="coach-name">王教练</div>
+              <div class="coach-tag">青少年</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 公告 -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">俱乐部公告</span>
+          </div>
+          <div class="notice-card">
+            <div class="notice-dot"></div>
+            <div>
+              <div class="notice-text">2025暑假集训营报名开始，7月1日至8月31日，每期5天，名额有限</div>
+              <div class="notice-time">2025.06.01</div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /content -->
+
+      <!-- Tab Bar -->
+      <div class="tab-bar">
+        <div class="tab-item active">
+          <div class="tab-icon">⊙</div>
+          <div class="tab-label" style="color:#3D5A2E">首页</div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-icon">◷</div>
+          <div class="tab-label">约课</div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-icon">⊕</div>
+          <div class="tab-label">赛事</div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-icon">◎</div>
+          <div class="tab-label">我的</div>
+        </div>
+      </div>
+
+    </div><!-- /phone-inner -->
+  </div><!-- /phone -->
+</div>
+
+<!-- 状态B：未登录首页 -->
+<div>
+  <div class="label">学员端 · 首页（未登录）</div>
+  <div class="phone">
+    <div class="phone-inner">
+
+      <div class="status-bar">
+        <span class="status-time">9:41</span>
+        <div class="status-icons"><span>●●●</span><span>WiFi</span><span>■</span></div>
+      </div>
+
+      <div class="hero">
+        <div class="hero-bg-circle"></div>
+        <div class="hero-bg-circle2"></div>
+        <div class="hero-badge"><span>TIGER TENNIS CLUB</span></div>
+        <div class="hero-title">Tiger 网球俱乐部</div>
+        <div class="hero-sub">广州 · 专业网球培训</div>
+      </div>
+
+      <div class="content">
+
+        <!-- 登录引导 -->
+        <div class="section">
+          <div style="
+            background: white;
+            border-radius: 16px;
+            padding: 20px 16px;
+            text-align: center;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+          ">
+            <div style="font-size:15px; color:#4A4A4A; margin-bottom:14px; line-height:1.5;">
+              登录后可预约课程<br>查看段位进度和课时余额
+            </div>
+            <div style="
+              background: #3D5A2E;
+              color: white;
+              border-radius: 14px;
+              padding: 14px;
+              font-size: 16px;
+              font-weight: 600;
+              margin-bottom: 10px;
+            ">立即登录</div>
+            <div style="font-size:13px; color:#9A9A9A;">还没有账号？<span style="color:#3D5A2E;">注册</span></div>
+          </div>
+        </div>
+
+        <!-- 教练展示 -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">我们的教练</span>
+            <span class="section-more">全部 ›</span>
+          </div>
+          <div class="coaches-scroll">
+            <div class="coach-card">
+              <div class="coach-avatar">黄</div>
+              <div class="coach-name">黄教练</div>
+              <div class="coach-tag">正手专项</div>
+            </div>
+            <div class="coach-card">
+              <div class="coach-avatar" style="background: linear-gradient(135deg, #5A7A43, #7A9A63);">李</div>
+              <div class="coach-name">李教练</div>
+              <div class="coach-tag">发球专项</div>
+            </div>
+            <div class="coach-card">
+              <div class="coach-avatar" style="background: linear-gradient(135deg, #2A3E1F, #3D5A2E);">陈</div>
+              <div class="coach-name">陈教练</div>
+              <div class="coach-tag">体能训练</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 套餐展示 -->
+        <div class="section">
+          <div class="section-header">
+            <span class="section-title">课程套餐</span>
+          </div>
+          <!-- 私教套餐卡 -->
+          <div style="
+            background: white;
+            border-radius: 12px;
+            padding: 14px 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 8px;
+          ">
+            <div style="
+              width: 64px; height: 64px;
+              border-radius: 10px;
+              background: #EEF3E8;
+              display: flex; align-items: center; justify-content: center;
+              font-size: 28px;
+              flex-shrink: 0;
+            ">🎾</div>
+            <div style="flex: 1;">
+              <div style="font-size:15px; font-weight:600; color:#1A1A1A;">私教10节卡</div>
+              <div style="font-size:12px; color:#9A9A9A; margin-top:2px;">1对1专属训练 · 有效期3个月</div>
+              <div style="
+                display: inline-block;
+                background: #EEF3E8; color: #3D5A2E;
+                font-size: 11px; font-weight: 500;
+                padding: 2px 8px; border-radius: 8px;
+                margin-top: 6px;
+              ">私教课</div>
+            </div>
+            <div style="font-size:13px; color:#3D5A2E; font-weight:600;">咨询 ›</div>
+          </div>
+          <div style="
+            background: white;
+            border-radius: 12px;
+            padding: 14px 16px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+          ">
+            <div style="
+              width: 64px; height: 64px;
+              border-radius: 10px;
+              background: #EEF3E8;
+              display: flex; align-items: center; justify-content: center;
+              font-size: 28px;
+              flex-shrink: 0;
+            ">👥</div>
+            <div style="flex: 1;">
+              <div style="font-size:15px; font-weight:600; color:#1A1A1A;">进阶团课20节</div>
+              <div style="font-size:12px; color:#9A9A9A; margin-top:2px;">按段位分班 · 有效期6个月</div>
+              <div style="
+                display: inline-block;
+                background: #EEF3E8; color: #3D5A2E;
+                font-size: 11px; font-weight: 500;
+                padding: 2px 8px; border-radius: 8px;
+                margin-top: 6px;
+              ">团课</div>
+            </div>
+            <div style="font-size:13px; color:#3D5A2E; font-weight:600;">咨询 ›</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="tab-bar">
+        <div class="tab-item active">
+          <div class="tab-icon">⊙</div>
+          <div class="tab-label" style="color:#3D5A2E">首页</div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-icon">◷</div>
+          <div class="tab-label">约课</div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-icon">⊕</div>
+          <div class="tab-label">赛事</div>
+        </div>
+        <div class="tab-item">
+          <div class="tab-icon">◎</div>
+          <div class="tab-label">我的</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

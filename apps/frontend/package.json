@@ -1,0 +1,37 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "taro build --type h5 --watch",
+    "build:h5": "taro build --type h5",
+    "build:weapp": "taro build --type weapp"
+  },
+  "dependencies": {
+    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-react": "^7.29.7",
+    "@babel/preset-typescript": "^7.29.7",
+    "@nutui/nutui-react-taro": "^3.0.0",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.6.2",
+    "@tarojs/components": "4.2.0",
+    "@tarojs/helper": "4.2.0",
+    "@tarojs/plugin-framework-react": "4.2.0",
+    "@tarojs/plugin-platform-h5": "^4.2.0",
+    "@tarojs/react": "4.2.0",
+    "@tarojs/runtime": "4.2.0",
+    "@tarojs/taro": "4.2.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-refresh": "^0.14.2",
+    "zustand": "^5.0.0"
+  },
+  "devDependencies": {
+    "@tarojs/cli": "4.2.0",
+    "@tarojs/webpack5-runner": "^4.2.0",
+    "@types/react": "^18.0.0",
+    "@types/react-dom": "^18.0.0",
+    "babel-preset-taro": "4.2.0",
+    "sass": "^1.70.0",
+    "typescript": "^5.0.0"
+  }
+}

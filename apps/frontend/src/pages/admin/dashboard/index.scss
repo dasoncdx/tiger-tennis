@@ -1,0 +1,46 @@
+.admin-dashboard { background: var(--color-gray-100); }
+
+.admin-header {
+  background: linear-gradient(160deg, #1A1A1A 0%, #1B4332 100%);
+  padding: 48px 20px 24px;
+  display: flex; justify-content: space-between; align-items: center;
+}
+
+.admin-title { display: block; font-size: 11px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 1px; }
+.admin-name { display: block; font-size: 20px; font-weight: 700; color: white; margin-top: 3px; }
+.logout { font-size: 14px; color: rgba(255,255,255,0.7); cursor: pointer; }
+
+.stats-grid {
+  display: flex; gap: 10px; margin-top: 20px;
+}
+
+.stat-card {
+  flex: 1; background: white; border-radius: 12px; padding: 14px 12px;
+  text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  border-top: 3px solid var(--color-primary);
+}
+
+.stat-num { display: block; font-size: 26px; font-weight: 700; color: var(--color-primary); }
+.stat-label { display: block; font-size: 11px; color: var(--color-gray-400); margin-top: 4px; }
+
+.menu-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+  margin-top: 4px;
+}
+
+.menu-card {
+  background: white; border-radius: 14px; padding: 16px 8px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); cursor: pointer; position: relative;
+}
+
+.menu-icon-wrap { position: relative; }
+.menu-icon { font-size: 28px; }
+.menu-badge {
+  position: absolute; top: -4px; right: -6px;
+  background: #FF3B30; border-radius: 8px; min-width: 16px; height: 16px;
+  padding: 0 4px; display: flex; align-items: center; justify-content: center;
+  text { font-size: 10px; font-weight: 700; color: white; }
+}
+
+.menu-label { font-size: 13px; font-weight: 500; color: var(--color-gray-900); }

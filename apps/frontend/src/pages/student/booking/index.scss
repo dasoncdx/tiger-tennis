@@ -1,0 +1,185 @@
+.tab-header {
+  display: flex;
+  background: white;
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tab-header-item {
+  flex: 1;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--color-gray-400);
+  border-bottom: 2px solid transparent;
+
+  &.active {
+    color: var(--color-primary);
+    border-bottom-color: var(--color-primary);
+    font-weight: 600;
+  }
+}
+
+.section-title-row { margin: 16px 0 10px; }
+
+.coach-list-item {
+  background: white;
+  border-radius: 12px;
+  padding: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.coach-list-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1B4332, #2D6A4F);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+
+.coach-list-avatar-img { width: 44px; height: 44px; }
+.coach-list-avatar-text { font-size: 17px; font-weight: 700; color: white; }
+
+.coach-list-info { flex: 1; }
+.coach-list-name { display: block; font-size: 15px; font-weight: 600; color: var(--color-gray-900); }
+.coach-list-spec { display: block; font-size: 12px; color: var(--color-gray-400); margin-top: 2px; }
+.chevron { color: var(--color-gray-200); font-size: 18px; }
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 16px 0 12px;
+}
+
+.back-btn { font-size: 16px; color: var(--color-primary); cursor: pointer; }
+.step-title { font-size: 16px; font-weight: 600; color: var(--color-gray-900); }
+
+.time-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.time-slot {
+  height: 52px;
+  border-radius: 8px;
+  background: var(--color-gray-100);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+
+  text { font-size: 11px; color: var(--color-gray-900); line-height: 1.4; }
+
+  &.selected {
+    background: var(--color-primary);
+    text { color: white; }
+  }
+
+  &.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+}
+
+.confirm-panel {
+  margin-top: 20px;
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.confirm-label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 10px; color: var(--color-gray-900); }
+.empty-text { display: block; font-size: 13px; color: var(--color-gray-400); margin-bottom: 12px; }
+
+.pkg-option {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1.5px solid var(--color-border);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+
+  text { font-size: 14px; color: var(--color-gray-900); }
+  &.selected { border-color: var(--color-primary); background: var(--color-primary-light-bg); }
+}
+
+.pkg-remain { font-size: 12px; color: var(--color-gray-400) !important; }
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  background: var(--color-primary);
+  border-radius: 14px;
+  margin-top: 14px;
+  cursor: pointer;
+
+  text { color: white; font-size: 15px; font-weight: 600; }
+  &.disabled { background: var(--color-gray-200); text { color: var(--color-gray-400); } }
+}
+
+// 团课卡片
+.group-card {
+  background: white;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.group-card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+.group-name { font-size: 15px; font-weight: 600; color: var(--color-gray-900); }
+.group-meta, .group-time, .group-capacity { display: block; font-size: 12px; color: var(--color-gray-400); margin-top: 3px; }
+
+.btn-outline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  border: 1.5px solid var(--color-primary);
+  border-radius: 10px;
+  margin-top: 12px;
+  cursor: pointer;
+
+  text { color: var(--color-primary); font-size: 14px; font-weight: 500; }
+}
+
+// 我的预约
+.booking-item {
+  background: white;
+  border-radius: 12px;
+  padding: 13px 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border-left: 3px solid var(--color-primary);
+}
+
+.booking-info { flex: 1; }
+.booking-title { display: block; font-size: 14px; font-weight: 600; color: var(--color-gray-900); }
+.booking-meta { display: block; font-size: 12px; color: var(--color-gray-400); margin-top: 2px; }
+.cancel-btn { font-size: 12px; color: var(--color-error); cursor: pointer; }
+
+.empty { padding: 24px; text-align: center; text { font-size: 13px; color: var(--color-gray-400); } }

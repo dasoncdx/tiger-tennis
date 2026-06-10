@@ -1,0 +1,88 @@
+.coach-schedule { background: var(--color-gray-100); }
+
+.day-selector {
+  display: flex;
+  background: white;
+  border-bottom: 1px solid var(--color-border);
+  overflow-x: auto;
+  padding: 8px 4px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.day-item {
+  min-width: 48px;
+  padding: 8px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+
+  &.active {
+    background: var(--color-primary);
+    .day-name, .day-num { color: white; }
+  }
+}
+
+.day-name { display: block; font-size: 11px; color: var(--color-gray-400); }
+.day-num { display: block; font-size: 17px; font-weight: 600; color: var(--color-gray-900); margin-top: 2px; }
+
+.day-dot {
+  width: 5px; height: 5px; border-radius: 50%;
+  background: var(--color-primary);
+  position: absolute;
+  bottom: 4px;
+}
+
+.day-label {
+  display: flex; justify-content: space-between; align-items: center;
+  margin: 16px 0 10px;
+  text { font-size: 15px; font-weight: 600; color: var(--color-gray-900); }
+}
+
+.booking-count { font-size: 13px; color: var(--color-gray-400); }
+
+.schedule-card {
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.schedule-time-bar {
+  width: 4px;
+  background: var(--color-primary);
+  flex-shrink: 0;
+}
+
+.schedule-body {
+  flex: 1;
+  padding: 12px 14px;
+}
+
+.schedule-top {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 6px;
+}
+
+.schedule-time { font-size: 14px; font-weight: 600; color: var(--color-gray-900); }
+.schedule-student { display: block; font-size: 15px; font-weight: 600; color: var(--color-gray-900); }
+.schedule-venue, .schedule-remark { display: block; font-size: 12px; color: var(--color-gray-400); margin-top: 3px; }
+
+.schedule-actions { margin-top: 10px; }
+
+.btn-complete {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 36px; padding: 0 16px;
+  background: var(--color-primary); border-radius: 8px; cursor: pointer;
+  text { color: white; font-size: 13px; font-weight: 600; }
+}
+
+.empty { padding: 40px; text-align: center; text { font-size: 13px; color: var(--color-gray-400); } }

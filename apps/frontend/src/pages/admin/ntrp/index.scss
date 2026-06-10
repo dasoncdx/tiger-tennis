@@ -1,0 +1,59 @@
+.admin-ntrp { background: var(--color-gray-100); }
+
+.page-header {
+  background: white; padding: 14px 16px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.page-title { font-size: 17px; font-weight: 600; color: var(--color-gray-900); }
+
+.tab-header {
+  display: flex; background: white;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.tab-item {
+  flex: 1; height: 44px; display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 500; color: var(--color-gray-400);
+  border-bottom: 2px solid transparent; cursor: pointer;
+  &.active { color: var(--color-primary); border-bottom-color: var(--color-primary); font-weight: 600; }
+}
+
+.ntrp-card { margin-bottom: 10px; margin-top: 12px; }
+.card { background: white; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+
+.ntrp-top { display: flex; justify-content: space-between; margin-bottom: 10px; }
+.ntrp-student { font-size: 15px; font-weight: 600; color: var(--color-gray-900); }
+.ntrp-coach { font-size: 12px; color: var(--color-gray-400); }
+
+.ntrp-levels {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 8px;
+}
+
+.ntrp-from, .ntrp-to { text-align: center; }
+.level-label { display: block; font-size: 11px; color: var(--color-gray-400); margin-bottom: 3px; }
+.level-val { display: block; font-size: 20px; font-weight: 700; color: var(--color-gray-900); }
+.level-val.primary { color: var(--color-primary); }
+.ntrp-arrow { font-size: 20px; color: var(--color-gray-200); }
+
+.ntrp-remark { display: block; font-size: 12px; color: var(--color-gray-400); margin-bottom: 4px; }
+.ntrp-time { display: block; font-size: 11px; color: var(--color-gray-400); }
+
+.ntrp-actions {
+  display: flex; gap: 10px; margin-top: 12px;
+}
+
+.btn-approve {
+  flex: 1; height: 40px; background: var(--color-primary);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;
+  text { color: white; font-size: 14px; font-weight: 600; }
+}
+
+.btn-reject {
+  flex: 1; height: 40px; border: 1.5px solid var(--color-error);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center; cursor: pointer;
+  text { color: var(--color-error); font-size: 14px; font-weight: 500; }
+}
+
+.reject-reason { display: block; font-size: 12px; color: var(--color-error); margin-top: 8px; }
+.empty { padding: 40px; text-align: center; text { font-size: 13px; color: var(--color-gray-400); } }

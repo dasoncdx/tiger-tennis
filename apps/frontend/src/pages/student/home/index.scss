@@ -1,0 +1,252 @@
+.hero {
+  position: relative;
+  height: 200px;
+  overflow: hidden;
+}
+
+.hero-swiper, .hero-placeholder {
+  width: 100%;
+  height: 200px;
+}
+
+.hero-img {
+  width: 100%;
+  height: 200px;
+}
+
+.hero-bg {
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(150deg, #1B4332 0%, #2D6A4F 50%, #40916C 100%);
+}
+
+.hero-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 20px 16px 14px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, transparent 100%);
+}
+
+.hero-name {
+  display: block;
+  color: white;
+  font-size: 19px;
+  font-weight: 700;
+}
+
+.hero-sub {
+  display: block;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 12px;
+  margin-top: 3px;
+}
+
+.section {
+  margin-top: 20px;
+}
+
+// 课时卡
+.pkg-card {
+  background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%);
+  border-radius: 14px;
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: white;
+}
+
+.pkg-label {
+  display: block;
+  font-size: 11px;
+  opacity: 0.7;
+  margin-bottom: 3px;
+}
+
+.pkg-name {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.pkg-tag {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 10px;
+  padding: 2px 8px;
+  margin-top: 6px;
+
+  text {
+    font-size: 11px;
+    color: white;
+  }
+}
+
+.pkg-expire {
+  display: block;
+  font-size: 11px;
+  opacity: 0.6;
+  margin-top: 6px;
+}
+
+.pkg-num {
+  display: block;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1;
+  text-align: right;
+}
+
+.pkg-unit {
+  display: block;
+  font-size: 12px;
+  opacity: 0.7;
+  text-align: right;
+}
+
+// 即将上课
+.upcoming-card {
+  background: white;
+  border-radius: 12px;
+  padding: 13px 14px;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  margin-bottom: 7px;
+  border-left: 3px solid #1B4332;
+
+  &--first {
+    border-left-color: #FF9500;
+  }
+}
+
+.upcoming-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
+  background: var(--color-primary-light-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  flex-shrink: 0;
+
+  &--first {
+    background: #FFF3E0;
+  }
+}
+
+.upcoming-info {
+  flex: 1;
+}
+
+.upcoming-title {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.upcoming-meta {
+  display: block;
+  font-size: 12px;
+  color: var(--color-gray-400);
+  margin-top: 2px;
+}
+
+// 未登录引导
+.login-guide {
+  background: white;
+  border-radius: 16px;
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.login-guide-text {
+  display: block;
+  font-size: 14px;
+  color: var(--color-gray-600);
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.btn-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 48px;
+  background: var(--color-primary);
+  border-radius: 14px;
+
+  text {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+// 教练横滑
+.coaches-scroll {
+  white-space: nowrap;
+}
+
+.coach-card {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  background: white;
+  border-radius: 12px;
+  padding: 13px 11px;
+  min-width: 108px;
+  margin-right: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  vertical-align: top;
+}
+
+.coach-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1B4332, #2D6A4F);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 7px;
+  overflow: hidden;
+}
+
+.coach-avatar-img {
+  width: 50px;
+  height: 50px;
+}
+
+.coach-avatar-text {
+  font-size: 19px;
+  font-weight: 700;
+  color: white;
+}
+
+.coach-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-gray-900);
+}
+
+.coach-tag {
+  display: inline-block;
+  background: var(--color-primary-light-bg);
+  border-radius: 6px;
+  padding: 2px 7px;
+  margin-top: 4px;
+
+  text {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-primary);
+  }
+}
