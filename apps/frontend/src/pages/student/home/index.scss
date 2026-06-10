@@ -1,149 +1,96 @@
+/* 严格按 color-options.html 方案A还原 */
+
 .home-page {
   background: #F5F5F5;
   min-height: 100vh;
-  padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
 }
 
-/* Hero Banner */
+/* ── Banner ── */
 .hero {
   position: relative;
   width: 100%;
-  height: 220px;
+  height: 200px;
   overflow: hidden;
-  background: linear-gradient(150deg, #1B4332 0%, #2D6A4F 50%, #40916C 100%);
 }
 
-.hero-swiper, .hero-fallback {
+.hero-swiper {
   width: 100%;
-  height: 220px;
+  height: 200px;
 }
 
 .hero-img {
   width: 100%;
-  height: 220px;
+  height: 200px;
 }
 
 .hero-fallback {
-  background: linear-gradient(150deg, #1B4332 0%, #2D6A4F 55%, #40916C 100%);
+  width: 100%;
+  height: 200px;
+  background: linear-gradient(150deg, #1B4332 0%, #2D6A4F 50%, #40916C 100%);
+  position: relative;
+}
+
+.court-svg-wrap {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
 }
 
 .hero-overlay {
   position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 24px 16px 16px;
-  background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%);
+  bottom: 0; left: 0; right: 0;
+  padding: 20px 16px 14px;
+  background: linear-gradient(to top, rgba(0,0,0,0.45) 0%, transparent 100%);
 }
 
 .hero-name {
   display: block;
-  font-size: 20px;
+  color: white;
+  font-size: 19px;
   font-weight: 700;
-  color: #FFFFFF;
-  letter-spacing: 0.5px;
 }
 
 .hero-sub {
   display: block;
-  font-size: 12px;
   color: rgba(255,255,255,0.75);
+  font-size: 12px;
   margin-top: 3px;
 }
 
-/* 内容区 */
-.home-content {
-  padding: 16px 16px 0;
-}
-
-/* 登录卡片 */
-.login-card {
-  background: #1B4332;
-  border-radius: 14px;
-  padding: 16px;
+.hero-dots {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
+  gap: 5px;
 }
 
-.login-card-left {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.login-avatar {
-  width: 48px;
-  height: 48px;
+.dot {
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  background: rgba(255,255,255,0.35);
+
+  &.active {
+    width: 14px;
+    border-radius: 3px;
+    background: white;
+  }
 }
 
-.login-hint {
-  display: block;
-  font-size: 17px;
-  font-weight: 700;
-  color: #FFFFFF;
+/* ── 内容区 ── */
+.content {
+  padding: 0 16px 16px;
+  background: #F5F5F5;
 }
 
-.login-hint-sub {
-  display: block;
-  font-size: 12px;
-  color: rgba(255,255,255,0.65);
-  margin-top: 2px;
-}
-
-.login-arrow {
-  font-size: 22px;
-  color: rgba(255,255,255,0.5);
-}
-
-/* 快捷入口 */
-.quick-actions {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 20px;
-}
-
-.quick-item {
-  flex: 1;
-  background: #FFFFFF;
-  border-radius: 12px;
-  padding: 16px 8px 12px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-  cursor: pointer;
-}
-
-.quick-icon {
-  width: 44px;
-  height: 44px;
-  background: #D8F3DC;
-  border-radius: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.quick-label {
-  font-size: 13px;
-  font-weight: 500;
-  color: #1A1A1A;
-}
-
-/* Section */
 .section {
-  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
-.section-hd {
+.section-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -152,101 +99,109 @@
 
 .section-title {
   font-size: 17px;
-  font-weight: 700;
+  font-weight: 600;
   color: #1A1A1A;
 }
 
 .section-more {
   font-size: 13px;
   font-weight: 500;
-  color: #1B4332;
 }
 
-/* 课时卡 */
+/* ── 课时卡 ── */
 .pkg-card {
-  background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 100%);
-  border-radius: 16px;
-  padding: 18px 20px;
+  border-radius: 14px;
+  padding: 16px 18px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: white;
 }
 
-.pkg-tag-text {
-  display: inline-block;
+.pkg-left {}
+
+.pkg-label {
+  display: block;
   font-size: 11px;
-  color: rgba(255,255,255,0.7);
-  background: rgba(255,255,255,0.15);
-  padding: 2px 8px;
-  border-radius: 20px;
-  margin-bottom: 6px;
+  opacity: 0.7;
+  margin-bottom: 3px;
+  color: white;
 }
 
 .pkg-name {
   display: block;
-  font-size: 17px;
-  font-weight: 700;
-  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+}
+
+.pkg-badge {
+  display: inline-block;
+  background: rgba(255,255,255,0.18);
+  border-radius: 10px;
+  padding: 2px 8px;
+  margin-top: 6px;
+
+  text {
+    font-size: 11px;
+    color: white;
+  }
 }
 
 .pkg-expire {
   display: block;
   font-size: 11px;
-  color: rgba(255,255,255,0.55);
+  opacity: 0.6;
   margin-top: 6px;
+  color: white;
+}
+
+.pkg-right {
+  text-align: right;
 }
 
 .pkg-num {
   display: block;
-  font-size: 42px;
-  font-weight: 800;
-  color: #FFFFFF;
+  font-size: 38px;
+  font-weight: 700;
   line-height: 1;
-  text-align: right;
+  color: white;
 }
 
 .pkg-unit {
   display: block;
   font-size: 12px;
-  color: rgba(255,255,255,0.65);
-  text-align: right;
-  margin-top: 3px;
+  opacity: 0.7;
+  margin-top: 2px;
+  color: white;
 }
 
-/* 即将上课 */
-.upcoming-item {
-  background: #FFFFFF;
+/* ── 即将上课 ── */
+.upcoming {
+  background: white;
   border-radius: 12px;
   padding: 13px 14px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 8px;
+  gap: 11px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  margin-bottom: 7px;
   border-left: 3px solid #1B4332;
 }
 
-.upcoming-icon-wrap {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+.upcoming-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 9px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
 }
 
-.upcoming-icon-emoji {
-  font-size: 18px;
-}
-
-.upcoming-info {
-  flex: 1;
-}
-
 .upcoming-title {
   display: block;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   color: #1A1A1A;
 }
@@ -255,82 +210,94 @@
   display: block;
   font-size: 12px;
   color: #9A9A9A;
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
 .upcoming-badge {
-  padding: 4px 10px;
+  padding: 3px 8px;
   border-radius: 20px;
   flex-shrink: 0;
 }
 
-/* 教练横滑 */
-.coaches-row {
+/* ── 未登录引导 ── */
+.login-guide {
+  background: white;
+  border-radius: 16px;
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.login-guide-text {
+  display: block;
+  font-size: 14px;
+  color: #4A4A4A;
+  margin-bottom: 14px;
+  line-height: 1.5;
+}
+
+.btn-green-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 48px;
+  background: #1B4332;
+  border-radius: 14px;
+  cursor: pointer;
+
+  text {
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+/* ── 教练横滑 ── */
+.coaches-scroll {
   white-space: nowrap;
   overflow-x: auto;
   display: flex;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar { display: none; }
 }
 
 .coach-card {
   display: inline-flex;
   flex-direction: column;
   align-items: center;
-  background: #FFFFFF;
+  background: white;
   border-radius: 12px;
-  padding: 14px 12px 12px;
-  min-width: 96px;
+  padding: 13px 11px;
+  min-width: 108px;
   margin-right: 10px;
   box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  flex-shrink: 0;
   vertical-align: top;
   cursor: pointer;
-  flex-shrink: 0;
 }
 
-.coach-avatar-wrap {
-  width: 56px;
-  height: 56px;
+.coach-avatar {
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  overflow: hidden;
-  margin-bottom: 8px;
-}
-
-.coach-avatar-img {
-  width: 56px;
-  height: 56px;
-}
-
-.coach-avatar-fallback {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #1B4332, #2D6A4F);
+  margin: 0 auto 7px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.coach-avatar-char {
-  font-size: 22px;
-  font-weight: 700;
-  color: #FFFFFF;
+  overflow: hidden;
 }
 
 .coach-name {
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   color: #1A1A1A;
   text-align: center;
 }
 
 .coach-tag {
-  margin-top: 5px;
-  background: #D8F3DC;
+  display: inline-block;
+  padding: 2px 7px;
   border-radius: 6px;
-  padding: 2px 8px;
-
-  text {
-    font-size: 10px;
-    font-weight: 500;
-    color: #1B4332;
-  }
+  margin-top: 4px;
 }
