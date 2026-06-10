@@ -22,7 +22,13 @@ const config = {
         : 'http://localhost:3001'
     ),
   },
-  copy: { patterns: [], options: {} },
+  copy: {
+    patterns: [
+      { from: 'static/index.html', to: 'dist/index.html' },
+      { from: 'static/Caddyfile', to: 'dist/Caddyfile' },
+    ],
+    options: {},
+  },
   framework: 'react',
   compiler: 'webpack5',
   cache: { enable: false },

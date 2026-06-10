@@ -94,7 +94,10 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
   ```
   cd apps/frontend && /path/to/tennis/node_modules/.bin/taro build --type h5
   ```
-- `dist/index.html` 和 `dist/Caddyfile` 不会被 taro 生成，每次构建后需手动确认存在
+- **`index.html` 和 `Caddyfile` 存放在 `apps/frontend/static/` 目录，绝对不要删除**
+  - 通过 `config/index.js` 的 `copy` 配置在构建时自动复制到 `dist/`
+  - 每次构建完检查 `dist/index.html` 和 `dist/Caddyfile` 是否存在，不存在说明 copy 配置失效
+- `dist/` 由 taro 构建自动管理，每次构建清空重新生成，不需要手动维护内部文件
 - 构建产物需 `git add -f apps/frontend/dist` 强制提交
 
 ### 多端适配规则
