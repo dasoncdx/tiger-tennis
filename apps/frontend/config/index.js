@@ -1,5 +1,7 @@
 const path = require('path')
 
+const isProduction = process.env.NODE_ENV === 'production'
+
 const config = {
   projectName: 'frontend',
   date: '2025-06-10',
@@ -13,7 +15,13 @@ const config = {
   sourceRoot: 'src',
   outputRoot: 'dist',
   plugins: [],
-  defineConstants: {},
+  defineConstants: {
+    'process.env.TARO_APP_API_URL': JSON.stringify(
+      isProduction
+        ? 'https://tiger-tennis.zeabur.app'
+        : 'http://localhost:3001'
+    ),
+  },
   copy: { patterns: [], options: {} },
   framework: 'react',
   compiler: 'webpack5',
@@ -43,3 +51,4 @@ module.exports = function (merge) {
   }
   return merge({}, config, require('./prod'))
 }
+
