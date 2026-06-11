@@ -47,8 +47,23 @@ export default function CoachStudents() {
 
   useEffect(() => {
     if (!user) return
-    // 获取负责的学员（使用私教预约关联或直接拉学员）
-    usersApi.students().then((d: any) => setStudents(d.list || []))
+    // 获取与该教练有私教预约记录的学员（已确认或已完成的）
+    request<any>('/bookings?pageSize=200', { needAuth: true }).then((d: any) => {
+      const list = d?.list || []
+      // 去重：按studentId去重，只保留唯一学员
+      const seen = new Set<string>()
+      const uniqueStudents: any[] = []
+      list.forEach((b: any) => {
+        if (b.student && !seen.has(b.student.id)) {
+          seen.add(b.student.id)
+          uniqueStudents.push(b.student)
+        }
+      })
+      setStudents(uniqueStudents)
+    }).catch(() => {
+      // 降级：拿全量学员
+      usersApi.students().then((d: any) => setStudents(d.list || []))
+    })
   }, [user])
 
   function loadStudentData(s: any) {

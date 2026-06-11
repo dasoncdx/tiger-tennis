@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { View, Text, Image } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { useAuthStore } from '../../../stores/auth'
@@ -6,61 +6,65 @@ import { request } from '../../../services/api'
 import TabBar from '../../../components/TabBar'
 import './index.scss'
 
-const tournamentsApi = {
-  list: (status?: string) => {
-    const qs = status ? `?status=${status}` : ''
-    return request<any[]>(`/tournaments${qs}`, { needAuth: false })
-  },
-  enter: (id: string) => request(`/tournaments/${id}/entries`, { method: 'POST' }),
-  myEntry: (id: string) => request(`/tournaments/${id}/my-entry`, { needAuth: true }),
-}
-
 export default function TournamentPage() {
   const { user, token } = useAuthStore()
+  // list 里每条直接带 isEnrolled 字段，避免异步竞态
   const [list, setList] = useState<any[]>([])
   const [activeTab, setActiveTab] = useState('all')
-  const [enrolledIds, setEnrolledIds] = useState<Set<string>>(new Set())
-  const [checkingEntry, setCheckingEntry] = useState(false)
+  const [loading, setLoading] = useState(false)
 
-  async function loadList(tab: string) {
-    const statusMap: Record<string, string | undefined> = {
-      all: undefined, open: 'PUBLISHED', upcoming: 'CLOSED', finished: 'FINISHED',
-    }
-    const data = await tournamentsApi.list(statusMap[tab])
-    setList(data || [])
+  const loadList = useCallback(async (tab: string) => {
+    setLoading(true)
+    try {
+      const statusMap: Record<string, string> = {
+        all: '', open: 'PUBLISHED', upcoming: 'CLOSED', finished: 'FINISHED',
+      }
+      const qs = statusMap[tab] ? `?status=${statusMap[tab]}` : ''
+      const data: any = await request(`/tournaments${qs}`, { needAuth: false })
+      const tournaments = (data || []) as any[]
 
-    // 如果已登录，检查哪些赛事已报名
-    if (token && user && data) {
-      const ids = new Set<string>()
-      await Promise.all((data as any[]).map(async (t: any) => {
+      // 如果已登录，一次性拉取我的报名记录，避免逐条查询
+      let myEntryIds = new Set<string>()
+      if (token && user) {
         try {
-          await tournamentsApi.myEntry(t.id)
-          ids.add(t.id)
+          const myEntries: any = await request('/tournaments/my-entries', { needAuth: true })
+          ;(myEntries || []).forEach((e: any) => myEntryIds.add(e.tournamentId))
         } catch {}
+      }
+
+      // 将 isEnrolled 直接合并到每条数据
+      const merged = tournaments.map((t: any) => ({
+        ...t,
+        isEnrolled: myEntryIds.has(t.id),
       }))
-      setEnrolledIds(ids)
+      setList(merged)
+    } finally {
+      setLoading(false)
     }
-  }
+  }, [token, user])
 
   useEffect(() => {
     loadList(activeTab)
-  }, [activeTab, token])
+  }, [activeTab, loadList])
 
   async function handleEnter(id: string, name: string) {
     if (!token) return Taro.navigateTo({ url: '/pages/login/index' })
     Taro.showModal({
       title: '确认报名',
-      content: `确定报名参加 ${name}？`,
+      content: `确定报名参加「${name}」？`,
       success: async (res) => {
-        if (res.confirm) {
-          try {
-            await tournamentsApi.enter(id)
-            Taro.showToast({ title: '报名成功', icon: 'success' })
-            // 重新加载整个列表，确保状态完全刷新
-            loadList(activeTab)
-          } catch (e: any) {
-            Taro.showToast({ title: e.message || '报名失败', icon: 'none' })
-          }
+        if (!res.confirm) return
+        try {
+          await request(`/tournaments/${id}/entries`, { method: 'POST' })
+          Taro.showToast({ title: '报名成功！', icon: 'success' })
+          // 报名成功：直接在本地更新该条状态，无需等待网络
+          setList(prev => prev.map(t =>
+            t.id === id
+              ? { ...t, isEnrolled: true, enrolledCount: (t.enrolledCount || 0) + 1 }
+              : t
+          ))
+        } catch (e: any) {
+          Taro.showToast({ title: e.message || '报名失败', icon: 'none' })
         }
       },
     })
@@ -83,7 +87,7 @@ export default function TournamentPage() {
   return (
     <View className='page'>
       <View className='tab-header'>
-        {tabs.map((t) => (
+        {tabs.map(t => (
           <View key={t.key} className={`tab-header-item ${activeTab === t.key ? 'active' : ''}`}
             onClick={() => setActiveTab(t.key)}>
             <Text>{t.label}</Text>
@@ -92,16 +96,17 @@ export default function TournamentPage() {
       </View>
 
       <View className='page-content'>
-        {list.length === 0 && (
-          <View className='empty' style={{ marginTop: 60 }}>
-            <Text>暂无赛事</Text>
-          </View>
+        {loading && list.length === 0 && (
+          <View className='empty' style={{ marginTop: 60 }}><Text>加载中...</Text></View>
         )}
-        {list.map((t) => {
-          const isEnrolled = enrolledIds.has(t.id)
-          const isFull = t.enrolledCount >= t.capacity
+        {!loading && list.length === 0 && (
+          <View className='empty' style={{ marginTop: 60 }}><Text>暂无赛事</Text></View>
+        )}
+
+        {list.map(t => {
+          const isFull = (t.enrolledCount || 0) >= t.capacity
           const isExpired = new Date() > new Date(t.registrationDeadline)
-          const canEnroll = t.status === 'PUBLISHED' && !isFull && !isExpired && !isEnrolled
+          const canEnroll = t.status === 'PUBLISHED' && !isFull && !isExpired && !t.isEnrolled
 
           return (
             <View key={t.id} className='tournament-card'>
@@ -109,11 +114,9 @@ export default function TournamentPage() {
               <View className='tournament-body'>
                 <View className='tournament-header'>
                   <Text className='tournament-name'>{t.name}</Text>
-                  {/* 已报名显示「已报名」标签，否则显示赛事状态 */}
-                  {isEnrolled ? (
-                    <View className='badge badge--enrolled'>
-                      <Text>已报名</Text>
-                    </View>
+                  {/* 已报名显示绿色「已报名」，否则显示赛事状态 */}
+                  {t.isEnrolled ? (
+                    <View className='badge badge--enrolled'><Text>已报名</Text></View>
                   ) : t.status !== 'DRAFT' && (
                     <View className={`badge ${STATUS_CLS[t.status] || ''}`}>
                       <Text>{STATUS_LABEL[t.status] || t.status}</Text>
@@ -124,11 +127,8 @@ export default function TournamentPage() {
                 <Text className='tournament-meta'>
                   举办日期：{new Date(t.eventDate).toLocaleDateString('zh-CN')}
                 </Text>
-                {/* 比赛地点 */}
                 {t.venue && (
-                  <Text className='tournament-meta'>
-                    比赛地点：{t.venue}
-                  </Text>
+                  <Text className='tournament-meta'>比赛地点：{t.venue}</Text>
                 )}
                 <Text className='tournament-meta'>
                   报名截止：{new Date(t.registrationDeadline).toLocaleDateString('zh-CN')}
@@ -137,16 +137,15 @@ export default function TournamentPage() {
                   名额：{t.enrolledCount}/{t.capacity}
                 </Text>
 
-                {/* 按钮区域 */}
                 {canEnroll && (
                   <View className='btn-primary' onClick={() => handleEnter(t.id, t.name)}>
                     <Text>立即报名</Text>
                   </View>
                 )}
-                {!isEnrolled && isFull && (
+                {!t.isEnrolled && isFull && (
                   <View className='btn-disabled'><Text>名额已满</Text></View>
                 )}
-                {isEnrolled && (
+                {t.isEnrolled && (
                   <View className='btn-enrolled'><Text>✓ 已报名，期待比赛</Text></View>
                 )}
               </View>
