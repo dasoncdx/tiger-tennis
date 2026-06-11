@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { View, Text, Input } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { usersApi, packagesApi } from '../../../services/api'
+import { usersApi, packagesApi, studentCoachApi } from '../../../services/api'
 import { requireAuth } from '../../../utils/auth'
 import './index.scss'
 
@@ -13,6 +13,11 @@ export default function AdminStudents() {
   const [selected, setSelected] = useState<any>(null)
   const [detail, setDetail] = useState<any>(null)
   const [templates, setTemplates] = useState<any[]>([])
+
+  // 关联教练
+  const [linkedCoaches, setLinkedCoaches] = useState<any[]>([])
+  const [allCoaches, setAllCoaches] = useState<any[]>([])
+  const [showBindCoach, setShowBindCoach] = useState(false)
 
   // 添加学员弹窗
   const [showAdd, setShowAdd] = useState(false)
@@ -40,11 +45,16 @@ export default function AdminStudents() {
   }
 
   useEffect(() => { load() }, [keyword])
-  useEffect(() => { packagesApi.templates().then((d: any) => setTemplates(d || [])) }, [])
+  useEffect(() => {
+    packagesApi.templates().then((d: any) => setTemplates(d || []))
+    usersApi.coaches().then((d: any) => setAllCoaches(d || []))
+  }, [])
 
   async function loadDetail(id: string) {
     const data: any = await usersApi.studentDetail(id)
     setDetail(data)
+    // 同时加载已关联教练
+    studentCoachApi.getStudentCoaches(id).then((d: any) => setLinkedCoaches(d || []))
   }
 
   // 添加学员（直接激活）
@@ -150,6 +160,33 @@ export default function AdminStudents() {
               ))}
             </View>
           )}
+
+          {/* 关联教练区块 */}
+          <View className='section-block' style={{ marginTop: '12px' }}>
+            <View className='section-hd'>
+              <Text className='section-t'>关联教练</Text>
+              <View className='btn-issue' onClick={() => setShowBindCoach(true)}>
+                <Text>+ 关联</Text>
+              </View>
+            </View>
+            {linkedCoaches.length === 0 && (
+              <Text className='empty-hint'>暂未关联教练</Text>
+            )}
+            {linkedCoaches.map((c: any) => (
+              <View key={c.id} className='pkg-row'>
+                <View>
+                  <Text className='pkg-name'>{c.name}</Text>
+                  <Text className='pkg-expire'>{c.specialty || '专业教练'}</Text>
+                </View>
+                <Text style={{ fontSize: '15px', color: '#FF3B30', cursor: 'pointer' }}
+                  onClick={async () => {
+                    await studentCoachApi.unbind(detail.id, c.id)
+                    studentCoachApi.getStudentCoaches(detail.id).then((d: any) => setLinkedCoaches(d || []))
+                    Taro.showToast({ title: '已解绑', icon: 'success' })
+                  }}>解绑</Text>
+              </View>
+            ))}
+          </View>
         </View>
 
         {/* 发放套餐弹窗 */}
@@ -167,6 +204,37 @@ export default function AdminStudents() {
               ))}
               <View className={`modal-ok ${issuing ? 'disabled' : ''}`} onClick={issuing ? undefined : doIssue}>
                 <Text>{issuing ? '发放中...' : '确认发放'}</Text>
+              </View>
+            </View>
+          </View>
+        )}
+
+        {/* 关联教练弹窗 */}
+        {showBindCoach && (
+          <View className='modal-mask' onClick={() => setShowBindCoach(false)}>
+            <View className='bottom-modal' onClick={(e:any) => e.stopPropagation()}>
+              <Text className='modal-title'>关联教练</Text>
+              <Text className='modal-tip'>选择要关联的教练（已关联的不会重复添加）</Text>
+              {allCoaches.map((c: any) => {
+                const bound = linkedCoaches.some((l: any) => l.id === c.id)
+                return (
+                  <View key={c.id}
+                    className={`template-opt ${bound ? 'selected' : ''}`}
+                    onClick={async () => {
+                      if (bound) {
+                        await studentCoachApi.unbind(detail.id, c.id)
+                      } else {
+                        await studentCoachApi.bind(detail.id, c.id)
+                      }
+                      studentCoachApi.getStudentCoaches(detail.id).then((d: any) => setLinkedCoaches(d || []))
+                      Taro.showToast({ title: bound ? '已解绑' : '已关联', icon: 'success' })
+                    }}>
+                    <Text>{c.name}  {c.specialty ? `· ${c.specialty}` : ''}  {bound ? '✓ 已关联' : ''}</Text>
+                  </View>
+                )
+              })}
+              <View className='modal-ok' onClick={() => setShowBindCoach(false)}>
+                <Text>完成</Text>
               </View>
             </View>
           </View>

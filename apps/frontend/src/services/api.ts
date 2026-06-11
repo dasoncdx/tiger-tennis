@@ -138,3 +138,15 @@ export const configApi = {
   deleteBanner: (id: string) => request(`/config/banners/${id}`, { method: 'DELETE' }),
   sortBanners: (ids: string[]) => request('/config/banners/sort', { method: 'PATCH', data: { ids } }),
 }
+
+// ─── 学员-教练关联（管理员）────────────────────
+export const studentCoachApi = {
+  bind: (studentId: string, coachId: string) =>
+    request('/users/student-coach', { method: 'POST', data: { studentId, coachId } }),
+  unbind: (studentId: string, coachId: string) =>
+    request('/users/student-coach', { method: 'DELETE', data: { studentId, coachId } }),
+  getCoachStudents: (coachId: string) =>
+    request(`/users/coach-students/${coachId}`, { needAuth: true }),
+  getStudentCoaches: (studentId: string) =>
+    request(`/users/student-coaches/${studentId}`, { needAuth: true }),
+}

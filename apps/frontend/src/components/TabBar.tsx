@@ -129,8 +129,9 @@ export default function TabBar({ active, role = 'STUDENT' }: TabBarProps) {
   const tabs = role === 'COACH' ? COACH_TABS : STUDENT_TABS
 
   function navigate(url: string) {
-    Taro.navigateTo({ url }).catch(() => {
-      Taro.redirectTo({ url })
+    // Tab 切换用 redirectTo 避免路由栈堆积
+    Taro.redirectTo({ url }).catch(() => {
+      Taro.navigateTo({ url })
     })
   }
 
