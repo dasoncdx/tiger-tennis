@@ -27,6 +27,17 @@ tournaments.post('/', authMiddleware, requireRole(Role.ADMIN), async (c) => {
   return c.json({ success: true, data: { id: t.id } }, 201)
 })
 
+// GET /api/v1/tournaments/my-entries — 必须在 /:id 之前注册，否则会被路径参数吃掉
+tournaments.get('/my-entries', authMiddleware, async (c) => {
+  const { userId: studentId } = c.get('user')
+  const entries = await prisma.tournamentEntry.findMany({
+    where: { studentId },
+    include: { tournament: true },
+    orderBy: { createdAt: 'desc' },
+  })
+  return c.json({ success: true, data: entries })
+})
+
 // PATCH /api/v1/tournaments/:id
 tournaments.patch('/:id', authMiddleware, requireRole(Role.ADMIN), async (c) => {
   const body = await c.req.json()
@@ -144,8 +155,6 @@ tournaments.post('/:id/diagnosis/send', authMiddleware, requireRole(Role.ADMIN),
   return c.json({ success: true, data: { message: `已发送 ${entries.length} 份诊断卡` } })
 })
 
-export default tournaments
-
 // GET /api/v1/tournaments/:id/my-entry — 查询当前用户的报名记录
 tournaments.get('/:id/my-entry', authMiddleware, async (c) => {
   const { userId: studentId } = c.get('user')
@@ -156,13 +165,4 @@ tournaments.get('/:id/my-entry', authMiddleware, async (c) => {
   return c.json({ success: true, data: entry })
 })
 
-// GET /api/v1/tournaments/my-entries — 查询当前用户所有报名记录
-tournaments.get('/my-entries', authMiddleware, async (c) => {
-  const { userId: studentId } = c.get('user')
-  const entries = await prisma.tournamentEntry.findMany({
-    where: { studentId },
-    include: { tournament: true },
-    orderBy: { createdAt: 'desc' },
-  })
-  return c.json({ success: true, data: entries })
-})
+export default tournaments

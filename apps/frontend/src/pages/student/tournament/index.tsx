@@ -56,7 +56,8 @@ export default function TournamentPage() {
           try {
             await tournamentsApi.enter(id)
             Taro.showToast({ title: '报名成功', icon: 'success' })
-            setEnrolledIds(prev => new Set([...prev, id]))
+            // 重新加载整个列表，确保状态完全刷新
+            loadList(activeTab)
           } catch (e: any) {
             Taro.showToast({ title: e.message || '报名失败', icon: 'none' })
           }

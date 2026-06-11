@@ -43,10 +43,10 @@
 
 .step-hint {
   display: block;
-  font-size: 18px;
-  font-weight: 600;
-  color: #4A4A4A;
-  margin-bottom: 10px;
+  font-size: 22px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 12px;
 }
 
 /* 教练列表 */
@@ -477,7 +477,7 @@
 
 .course-name {
   display: block;
-  font-size: 16px;
+  font-size: 21px;
   font-weight: 700;
   color: #1A1A1A;
   margin-bottom: 4px;
@@ -485,9 +485,9 @@
 
 .course-meta {
   display: block;
-  font-size: 13px;
+  font-size: 17px;
   color: #9A9A9A;
-  margin-top: 2px;
+  margin-top: 3px;
 }
 
 .course-sold-out {
@@ -505,12 +505,12 @@
 
 .course-select-btn {
   flex-shrink: 0;
-  padding: 6px 12px;
+  padding: 7px 16px;
   background: #1B4332;
-  border-radius: 8px;
+  border-radius: 20px;
 
   text {
-    font-size: 14px;
+    font-size: 15px;
     color: white;
     font-weight: 600;
   }
