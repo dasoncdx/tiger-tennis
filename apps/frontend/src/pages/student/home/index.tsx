@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { View, Text, Image, Swiper, SwiperItem, ScrollView } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { configApi, packagesApi, bookingsApi, usersApi } from '../../../services/api'
+import { configApi, packagesApi, bookingsApi, groupClassesApi, usersApi, request } from '../../../services/api'
 import { useAuthStore } from '../../../stores/auth'
 import TabBar from '../../../components/TabBar'
 import './index.scss'
@@ -11,16 +11,13 @@ function formatDate(iso: string) {
   return `${d.getMonth()+1}月${d.getDate()}日 ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
 }
 
-const STATUS_CONFIG: Record<string, {label:string;bg:string;color:string;border:string}> = {
-  PENDING:   { label:'待确认', bg:'#FFF3CD', color:'#FF9500', border:'#FF9500' },
-  CONFIRMED: { label:'已确认', bg:'#D8F3DC', color:'#1B4332', border:'#1B4332' },
-  COMPLETED: { label:'已完成', bg:'#F0F0F0', color:'#9A9A9A', border:'#C8C8C8' },
-  CANCELLED: { label:'已取消', bg:'#FFE8E8', color:'#FF3B30', border:'#FF3B30' },
+function formatDateShort(iso: string) {
+  const d = new Date(iso)
+  return `${d.getMonth()+1}月${d.getDate()}日`
 }
 
-// 默认公告数据
 const DEFAULT_NOTICES = [
-  { id: '1', title: '2025年暑期招生简章', content: '现面向6-16岁青少年开放暑期网球培训班，分初级、中级、高级三个班型，小班教学，每班不超过8人。报名咨询请联系管理员。', date: '2025-06-01' },
+  { id: '1', title: '2025年暑期招生简章', content: '现面向6-16岁青少年开放暑期网球培训班，分初级、中级、高级三个班型，小班教学，每班不超过8人。', date: '2025-06-01' },
   { id: '2', title: '场地使用须知', content: '请学员在上课时间前10分钟到达场地做热身准备，请穿着专业网球鞋进入场地，禁止穿拖鞋、皮鞋上场。', date: '2025-05-15' },
 ]
 
@@ -29,8 +26,11 @@ export default function StudentHome() {
   const [banners, setBanners] = useState<{id:string;imageUrl:string}[]>([])
   const [siteName, setSiteName] = useState('Tiger网球俱乐部')
   const [coaches, setCoaches] = useState<any[]>([])
-  const [packages, setPackages] = useState<any[]>([])
-  const [upcomingBookings, setUpcomingBookings] = useState<any[]>([])
+  const [packages, setPackages] = useState<any[]>([])           // 私教套餐
+  const [groupEnrollments, setGroupEnrollments] = useState<any[]>([]) // 已报名团课
+  const [upcomingBookings, setUpcomingBookings] = useState<any[]>([]) // 即将上课（私教）
+  const [upcomingGroupSessions, setUpcomingGroupSessions] = useState<any[]>([]) // 即将上课（团课）
+  const [upcomingTournaments, setUpcomingTournaments] = useState<any[]>([]) // 即将参赛
 
   useEffect(() => {
     loadFromStorage()
@@ -40,20 +40,67 @@ export default function StudentHome() {
   }, [])
 
   useEffect(() => {
-    if (!token||!user) return
+    if (!token || !user) return
+
+    // 所有套餐（私教+团课）
     packagesApi.studentPackages(user.id).then((d:any) =>
-      setPackages((d||[]).filter((p:any)=>!p.isExpired&&p.remainingLessons>0))
+      setPackages((d||[]).filter((p:any) => !p.isExpired && p.remainingLessons > 0))
     )
+
+    // 已确认的私教预约（全部未来的）
     bookingsApi.list({ status:'CONFIRMED' }).then((d:any) => {
       const now = new Date()
       setUpcomingBookings(
         (d.list||[])
           .filter((b:any) => new Date(b.startTime) > now)
-          .sort((a:any,b:any) => new Date(a.startTime).getTime()-new Date(b.startTime).getTime())
-          .slice(0, 5)
+          .sort((a:any,b:any) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
       )
     })
+
+    // 已报名的团课（含报名中和已确认）
+    groupClassesApi.list().then(async (classes:any) => {
+      const allClasses = classes || []
+      const oneWeekLater = new Date()
+      oneWeekLater.setDate(oneWeekLater.getDate() + 7)
+      const now = new Date()
+
+      // 获取学员已报名的班级（通过enrollment判断）
+      const enrolledSessions: any[] = []
+      for (const gc of allClasses) {
+        try {
+          const sessions: any = await request(`/group-classes/${gc.id}/sessions`, { needAuth: true })
+          if (sessions && sessions.length > 0) {
+            const upcoming = (sessions as any[]).filter((s:any) => {
+              const t = new Date(s.startTime)
+              return t > now && t <= oneWeekLater && s.myAttendance === null
+            })
+            upcoming.forEach((s:any) => enrolledSessions.push({ ...s, className: gc.name, coachName: gc.coachName }))
+          }
+        } catch {}
+      }
+      enrolledSessions.sort((a:any,b:any) => new Date(a.startTime).getTime() - new Date(b.startTime).getTime())
+      setUpcomingGroupSessions(enrolledSessions)
+    })
+
+    // 即将参赛的赛事（已报名）
+    request<any[]>('/tournaments', { needAuth: false }).then(async (tournaments:any) => {
+      const now = new Date()
+      const upcoming: any[] = []
+      for (const t of (tournaments||[])) {
+        if (new Date(t.eventDate) < now) continue
+        try {
+          const entry = await request(`/tournaments/${t.id}/my-entry`, { needAuth: true })
+          if (entry) upcoming.push({ ...t, entryId: (entry as any).id })
+        } catch {}
+      }
+      upcoming.sort((a:any,b:any) => new Date(a.eventDate).getTime() - new Date(b.eventDate).getTime())
+      setUpcomingTournaments(upcoming)
+    })
+
   }, [token, user])
+
+  const privatePackages = packages.filter(p => p.type === 'PRIVATE')
+  const groupPackages = packages.filter(p => p.type === 'GROUP')
 
   return (
     <View className='home-page'>
@@ -100,16 +147,15 @@ export default function StudentHome() {
           </View>
         )}
 
-        {/* 我的课时（登录后，直接铺开，不要「全部>」） */}
+        {/* 我的课程（私教+团课，去掉「全部>」）*/}
         {token && user && packages.length > 0 && (
           <View className='section'>
-            <Text className='section-title'>我的课时</Text>
+            <Text className='home-section-title'>我的课程</Text>
             {packages.map(p => (
               <View key={p.id} className='pkg-card' style={{background:'linear-gradient(135deg,#1B4332 0%,#2D6A4F 100%)',marginBottom:'8px'}}>
                 <View className='pkg-left'>
-                  <Text className='pkg-label'>当前套餐</Text>
+                  <Text className='pkg-label'>{p.type==='PRIVATE'?'私教课':'团课'}</Text>
                   <Text className='pkg-name'>{p.templateName}</Text>
-                  <View className='pkg-badge'><Text>{p.type==='PRIVATE'?'私教课':'团课'}</Text></View>
                   <Text className='pkg-expire'>有效期至 {new Date(p.endDate).toLocaleDateString('zh-CN',{year:'numeric',month:'2-digit',day:'2-digit'})}</Text>
                 </View>
                 <View className='pkg-right'>
@@ -121,34 +167,70 @@ export default function StudentHome() {
           </View>
         )}
 
-        {/* 即将上课（登录后，直接铺开，不要「全部>」） */}
-        {token && user && upcomingBookings.length > 0 && (
+        {/* 即将上课（私教已确认全部 + 团课1周内）*/}
+        {token && user && (upcomingBookings.length > 0 || upcomingGroupSessions.length > 0) && (
           <View className='section'>
-            <Text className='section-title'>即将上课</Text>
-            {upcomingBookings.map((b) => {
-              const s = STATUS_CONFIG[b.status]||STATUS_CONFIG.PENDING
-              return (
-                <View key={b.id} className='upcoming' style={{borderLeftColor:s.border}}>
-                  <View className='upcoming-icon' style={{background:s.bg}}>
-                    <Text style={{fontSize:'20px'}}>🎾</Text>
-                  </View>
-                  <View style={{flex:1}}>
-                    <Text className='upcoming-title'>私教课 · {b.coach?.name}</Text>
-                    <Text className='upcoming-meta'>{formatDate(b.startTime)}{b.venue?` · ${b.venue}`:''}</Text>
-                  </View>
-                  <View className='upcoming-badge' style={{background:s.bg}}>
-                    <Text style={{color:s.color,fontSize:'13px',fontWeight:'500'}}>{s.label}</Text>
-                  </View>
+            <Text className='home-section-title'>即将上课</Text>
+            {/* 私教预约 */}
+            {upcomingBookings.map(b => (
+              <View key={b.id} className='upcoming' style={{borderLeftColor:'#1B4332'}}>
+                <View className='upcoming-icon' style={{background:'#D8F3DC'}}>
+                  <Text style={{fontSize:'20px'}}>🎾</Text>
                 </View>
-              )
-            })}
+                <View style={{flex:1}}>
+                  <Text className='upcoming-title'>私教课 · {b.coach?.name}</Text>
+                  <Text className='upcoming-meta'>{formatDate(b.startTime)}{b.venue?` · ${b.venue}`:''}</Text>
+                </View>
+                <View className='upcoming-badge' style={{background:'#D8F3DC'}}>
+                  <Text style={{color:'#1B4332',fontSize:'14px',fontWeight:'600'}}>已确认</Text>
+                </View>
+              </View>
+            ))}
+            {/* 团课（1周内） */}
+            {upcomingGroupSessions.map((s,i) => (
+              <View key={`gs-${i}`} className='upcoming' style={{borderLeftColor:'#40916C'}}>
+                <View className='upcoming-icon' style={{background:'#D8F3DC'}}>
+                  <Text style={{fontSize:'20px'}}>👥</Text>
+                </View>
+                <View style={{flex:1}}>
+                  <Text className='upcoming-title'>{s.className}</Text>
+                  <Text className='upcoming-meta'>{formatDate(s.startTime)}{s.venue?` · ${s.venue}`:''}</Text>
+                </View>
+                <View className='upcoming-badge' style={{background:'#EEF8F0'}}>
+                  <Text style={{color:'#40916C',fontSize:'14px',fontWeight:'600'}}>团课</Text>
+                </View>
+              </View>
+            ))}
           </View>
         )}
 
-        {/* 教练团队（「全部>」跳教练列表页） */}
+        {/* 即将参赛 */}
+        {token && user && upcomingTournaments.length > 0 && (
+          <View className='section'>
+            <Text className='home-section-title'>即将参赛</Text>
+            {upcomingTournaments.map(t => (
+              <View key={t.id} className='upcoming' style={{borderLeftColor:'#FF9500'}}>
+                <View className='upcoming-icon' style={{background:'#FFF3CD'}}>
+                  <Text style={{fontSize:'20px'}}>🏆</Text>
+                </View>
+                <View style={{flex:1}}>
+                  <Text className='upcoming-title'>{t.name}</Text>
+                  <Text className='upcoming-meta'>
+                    {formatDateShort(t.eventDate)}{t.venue?` · ${t.venue}`:''}
+                  </Text>
+                </View>
+                <View className='upcoming-badge' style={{background:'#FFF3CD'}}>
+                  <Text style={{color:'#FF9500',fontSize:'14px',fontWeight:'600'}}>已报名</Text>
+                </View>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {/* 教练团队（「全部>」跳教练列表页）*/}
         <View className='section'>
           <View className='section-header'>
-            <Text className='section-title'>教练团队</Text>
+            <Text className='home-section-title'>教练团队</Text>
             <Text className='section-more' style={{color:'#1B4332'}}
               onClick={()=>Taro.navigateTo({url:'/pages/student/coaches/index'})}>全部 ›</Text>
           </View>
@@ -175,10 +257,10 @@ export default function StudentHome() {
 
         {/* 俱乐部公告 */}
         <View className='section'>
-          <Text className='section-title' style={{marginBottom:'12px'}}>俱乐部公告</Text>
+          <Text className='home-section-title' style={{marginBottom:'12px'}}>俱乐部公告</Text>
           {DEFAULT_NOTICES.map(n => (
             <View key={n.id} className='notice-item'>
-              <View className='notice-dot' />
+              <View className='notice-dot'/>
               <View className='notice-body'>
                 <Text className='notice-title'>{n.title}</Text>
                 <Text className='notice-content'>{n.content}</Text>

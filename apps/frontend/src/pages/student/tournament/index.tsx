@@ -12,19 +12,39 @@ const tournamentsApi = {
     return request<any[]>(`/tournaments${qs}`, { needAuth: false })
   },
   enter: (id: string) => request(`/tournaments/${id}/entries`, { method: 'POST' }),
+  myEntry: (id: string) => request(`/tournaments/${id}/my-entry`, { needAuth: true }),
 }
 
 export default function TournamentPage() {
   const { user, token } = useAuthStore()
   const [list, setList] = useState<any[]>([])
   const [activeTab, setActiveTab] = useState('all')
+  const [enrolledIds, setEnrolledIds] = useState<Set<string>>(new Set())
+  const [checkingEntry, setCheckingEntry] = useState(false)
 
-  useEffect(() => {
+  async function loadList(tab: string) {
     const statusMap: Record<string, string | undefined> = {
       all: undefined, open: 'PUBLISHED', upcoming: 'CLOSED', finished: 'FINISHED',
     }
-    tournamentsApi.list(statusMap[activeTab]).then((data) => setList(data))
-  }, [activeTab])
+    const data = await tournamentsApi.list(statusMap[tab])
+    setList(data || [])
+
+    // 如果已登录，检查哪些赛事已报名
+    if (token && user && data) {
+      const ids = new Set<string>()
+      await Promise.all((data as any[]).map(async (t: any) => {
+        try {
+          await tournamentsApi.myEntry(t.id)
+          ids.add(t.id)
+        } catch {}
+      }))
+      setEnrolledIds(ids)
+    }
+  }
+
+  useEffect(() => {
+    loadList(activeTab)
+  }, [activeTab, token])
 
   async function handleEnter(id: string, name: string) {
     if (!token) return Taro.navigateTo({ url: '/pages/login/index' })
@@ -36,7 +56,7 @@ export default function TournamentPage() {
           try {
             await tournamentsApi.enter(id)
             Taro.showToast({ title: '报名成功', icon: 'success' })
-            tournamentsApi.list().then((data) => setList(data))
+            setEnrolledIds(prev => new Set([...prev, id]))
           } catch (e: any) {
             Taro.showToast({ title: e.message || '报名失败', icon: 'none' })
           }
@@ -63,7 +83,8 @@ export default function TournamentPage() {
     <View className='page'>
       <View className='tab-header'>
         {tabs.map((t) => (
-          <View key={t.key} className={`tab-header-item ${activeTab === t.key ? 'active' : ''}`} onClick={() => setActiveTab(t.key)}>
+          <View key={t.key} className={`tab-header-item ${activeTab === t.key ? 'active' : ''}`}
+            onClick={() => setActiveTab(t.key)}>
             <Text>{t.label}</Text>
           </View>
         ))}
@@ -75,38 +96,62 @@ export default function TournamentPage() {
             <Text>暂无赛事</Text>
           </View>
         )}
-        {list.map((t) => (
-          <View key={t.id} className='tournament-card'>
-            {t.coverUrl && <Image className='tournament-cover' src={t.coverUrl} mode='aspectFill' />}
-            <View className='tournament-body'>
-              <View className='tournament-header'>
-                <Text className='tournament-name'>{t.name}</Text>
-                {t.status !== 'DRAFT' && (
-                  <View className={`badge ${STATUS_CLS[t.status] || ''}`}>
-                    <Text>{STATUS_LABEL[t.status] || t.status}</Text>
+        {list.map((t) => {
+          const isEnrolled = enrolledIds.has(t.id)
+          const isFull = t.enrolledCount >= t.capacity
+          const isExpired = new Date() > new Date(t.registrationDeadline)
+          const canEnroll = t.status === 'PUBLISHED' && !isFull && !isExpired && !isEnrolled
+
+          return (
+            <View key={t.id} className='tournament-card'>
+              {t.coverUrl && <Image className='tournament-cover' src={t.coverUrl} mode='aspectFill' />}
+              <View className='tournament-body'>
+                <View className='tournament-header'>
+                  <Text className='tournament-name'>{t.name}</Text>
+                  {/* 已报名显示「已报名」标签，否则显示赛事状态 */}
+                  {isEnrolled ? (
+                    <View className='badge badge--enrolled'>
+                      <Text>已报名</Text>
+                    </View>
+                  ) : t.status !== 'DRAFT' && (
+                    <View className={`badge ${STATUS_CLS[t.status] || ''}`}>
+                      <Text>{STATUS_LABEL[t.status] || t.status}</Text>
+                    </View>
+                  )}
+                </View>
+
+                <Text className='tournament-meta'>
+                  举办日期：{new Date(t.eventDate).toLocaleDateString('zh-CN')}
+                </Text>
+                {/* 比赛地点 */}
+                {t.venue && (
+                  <Text className='tournament-meta'>
+                    比赛地点：{t.venue}
+                  </Text>
+                )}
+                <Text className='tournament-meta'>
+                  报名截止：{new Date(t.registrationDeadline).toLocaleDateString('zh-CN')}
+                </Text>
+                <Text className='tournament-meta'>
+                  名额：{t.enrolledCount}/{t.capacity}
+                </Text>
+
+                {/* 按钮区域 */}
+                {canEnroll && (
+                  <View className='btn-primary' onClick={() => handleEnter(t.id, t.name)}>
+                    <Text>立即报名</Text>
                   </View>
                 )}
+                {!isEnrolled && isFull && (
+                  <View className='btn-disabled'><Text>名额已满</Text></View>
+                )}
+                {isEnrolled && (
+                  <View className='btn-enrolled'><Text>✓ 已报名，期待比赛</Text></View>
+                )}
               </View>
-              <Text className='tournament-meta'>
-                举办日期：{new Date(t.eventDate).toLocaleDateString('zh-CN')}
-              </Text>
-              <Text className='tournament-meta'>
-                报名截止：{new Date(t.registrationDeadline).toLocaleDateString('zh-CN')}
-              </Text>
-              <Text className='tournament-meta'>
-                名额：{t.enrolledCount}/{t.capacity}
-              </Text>
-              {t.status === 'PUBLISHED' && t.enrolledCount < t.capacity && new Date() <= new Date(t.registrationDeadline) && (
-                <View className='btn-primary' onClick={() => handleEnter(t.id, t.name)}>
-                  <Text>立即报名</Text>
-                </View>
-              )}
-              {t.status === 'PUBLISHED' && t.enrolledCount >= t.capacity && (
-                <View className='btn-disabled'><Text>名额已满</Text></View>
-              )}
             </View>
-          </View>
-        ))}
+          )
+        })}
       </View>
       <TabBar active='tournament' role='STUDENT' />
     </View>

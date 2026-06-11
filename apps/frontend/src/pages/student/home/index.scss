@@ -346,3 +346,20 @@
   color: #9A9A9A;
   margin-top: 5px;
 }
+
+/* 首页统一标题样式 */
+.home-section-title {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 10px;
+}
+
+/* section-header 兼容（教练团队用） */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}

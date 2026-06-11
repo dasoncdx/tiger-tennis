@@ -350,17 +350,23 @@ export default function BookingPage() {
                   {b.venue && <Text className='booking-venue'>{b.venue}</Text>}
                 </View>
                 <View>
-                  <View className={`status-badge ${s.cls}`}><Text>{s.label}</Text></View>
-                  {b.status === 'PENDING' && (
-                    <Text className='cancel-text' onClick={() => Taro.showModal({
-                      title: '取消预约', content: '确定要取消这个预约吗？',
-                      success: async res => {
-                        if (!res.confirm) return
-                        await bookingsApi.cancel(b.id)
-                        Taro.showToast({ title: '已取消', icon: 'success' })
-                        loadBookings()
-                      },
-                    })}>取消</Text>
+                  {b.status === 'PENDING' ? (
+                    <View className='booking-status-row'>
+                      <View className={`status-badge ${s.cls}`}><Text>{s.label}</Text></View>
+                      <View className='cancel-btn-inline' onClick={() => Taro.showModal({
+                        title: '取消预约', content: '确定要取消这个预约吗？',
+                        success: async res => {
+                          if (!res.confirm) return
+                          await bookingsApi.cancel(b.id)
+                          Taro.showToast({ title: '已取消', icon: 'success' })
+                          loadBookings()
+                        },
+                      })}>
+                        <Text>取消</Text>
+                      </View>
+                    </View>
+                  ) : (
+                    <View className={`status-badge ${s.cls}`}><Text>{s.label}</Text></View>
                   )}
                 </View>
               </View>

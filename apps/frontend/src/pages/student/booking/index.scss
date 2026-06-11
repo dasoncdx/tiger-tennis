@@ -144,14 +144,14 @@
 }
 
 .date-week {
-  font-size: 17px;
+  font-size: 13px;
   color: #9A9A9A;
   font-weight: 400;
 }
 
 .date-num {
-  font-size: 21px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 600;
   color: #1A1A1A;
   margin-top: 2px;
 }
@@ -379,9 +379,9 @@
 .booking-venue { display: block; font-size: 18px; color: #9A9A9A; margin-top: 2px; }
 
 .status-badge {
-  padding: 4px 10px;
+  padding: 5px 12px;
   border-radius: 20px;
-  text { font-size: 18px; font-weight: 500; }
+  text { font-size: 14px; font-weight: 600; }
 
   &.badge-pending { background: #FFF3CD; text { color: #FF9500; } }
   &.badge-confirmed { background: #D8F3DC; text { color: #1B4332; } }
@@ -389,13 +389,28 @@
   &.badge-cancelled { background: #FFE8E8; text { color: #FF3B30; } }
 }
 
-.cancel-text {
-  display: block;
-  font-size: 18px;
-  color: #FF3B30;
-  text-align: right;
-  margin-top: 6px;
+/* 待确认行：状态+取消同行 */
+.booking-status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cancel-btn-inline {
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: #FFE8E8;
   cursor: pointer;
+
+  text {
+    font-size: 14px;
+    font-weight: 600;
+    color: #FF3B30;
+  }
+}
+
+.cancel-text {
+  display: none; /* 不再使用，改为 cancel-btn-inline */
 }
 
 .empty-wrap {
@@ -530,7 +545,7 @@
 
 .chc-name {
   display: block;
-  font-size: 16px;
+  font-size: 21px;
   font-weight: 700;
   color: #1A1A1A;
   margin-bottom: 4px;
@@ -538,14 +553,18 @@
 
 .chc-meta {
   display: block;
-  font-size: 13px;
+  font-size: 17px;
   color: #9A9A9A;
   margin-top: 2px;
 }
 
 .chc-back {
-  font-size: 13px;
+  font-size: 14px;
+  font-weight: 600;
   color: #1B4332;
+  background: #D8F3DC;
+  border-radius: 20px;
+  padding: 6px 14px;
   flex-shrink: 0;
   cursor: pointer;
 }

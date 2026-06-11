@@ -155,3 +155,14 @@ tournaments.get('/:id/my-entry', authMiddleware, async (c) => {
   if (!entry) return c.json({ success: false, error: '未报名' }, 404)
   return c.json({ success: true, data: entry })
 })
+
+// GET /api/v1/tournaments/my-entries — 查询当前用户所有报名记录
+tournaments.get('/my-entries', authMiddleware, async (c) => {
+  const { userId: studentId } = c.get('user')
+  const entries = await prisma.tournamentEntry.findMany({
+    where: { studentId },
+    include: { tournament: true },
+    orderBy: { createdAt: 'desc' },
+  })
+  return c.json({ success: true, data: entries })
+})

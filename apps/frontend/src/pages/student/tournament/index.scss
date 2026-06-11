@@ -92,3 +92,26 @@
   text-align: center;
   text { font-size: 20px; color: var(--color-gray-400); }
 }
+
+/* 已报名标签 */
+.badge--enrolled {
+  background: #D8F3DC;
+  text { color: #1B4332; }
+}
+
+/* 已报名按钮（替代「立即报名」） */
+.btn-enrolled {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  background: #EEF3E8;
+  border-radius: 12px;
+  margin-top: 12px;
+
+  text {
+    color: #1B4332;
+    font-size: 15px;
+    font-weight: 600;
+  }
+}

@@ -20,21 +20,13 @@ export default function MyTournamentsPage() {
       Taro.redirectTo({ url: '/pages/login/index' })
       return
     }
-    // 获取学员自己的报名记录（通过赛事列表过滤）
-    request<any[]>('/tournaments', { needAuth: true }).then(async (tournaments: any) => {
-      const allEntries: any[] = []
-      for (const t of tournaments) {
-        // 检查当前用户是否报名了这个赛事
-        try {
-          const myEntry = await request<any>(`/tournaments/${t.id}/my-entry`, { needAuth: true })
-          if (myEntry) {
-            allEntries.push({ ...myEntry, tournament: t })
-          }
-        } catch {}
-      }
-      setEntries(allEntries)
-      setLoading(false)
-    }).catch(() => setLoading(false))
+    // 直接用新接口一次性拿所有报名记录
+    request<any[]>('/tournaments/my-entries', { needAuth: true })
+      .then((data: any) => {
+        setEntries(data || [])
+        setLoading(false)
+      })
+      .catch(() => setLoading(false))
   }, [token, user])
 
   const STATUS_LABEL: Record<string, string> = {
@@ -70,23 +62,26 @@ export default function MyTournamentsPage() {
 
         {entries.map(entry => {
           const t = entry.tournament
+          if (!t) return null
           return (
             <View key={entry.id} className='mt-card'>
-              {/* 赛事名称和状态 */}
               <View className='mt-card-hd'>
                 <Text className='mt-name'>{t.name}</Text>
-                <View className='mt-status' style={{ background: STATUS_COLOR[t.status] ? `${STATUS_COLOR[t.status]}20` : '#F0F0F0' }}>
-                  <Text style={{ color: STATUS_COLOR[t.status] || '#9A9A9A', fontSize: '13px', fontWeight: '600' }}>
+                <View className='mt-status' style={{
+                  background: STATUS_COLOR[t.status] ? `${STATUS_COLOR[t.status]}20` : '#F0F0F0'
+                }}>
+                  <Text style={{ color: STATUS_COLOR[t.status] || '#9A9A9A', fontSize: '14px', fontWeight: '600' }}>
                     {STATUS_LABEL[t.status] || t.status}
                   </Text>
                 </View>
               </View>
 
-              {/* 赛事详情 */}
               <View className='mt-info-list'>
                 <View className='mt-info-row'>
                   <Text className='mt-info-label'>📅 比赛日期</Text>
-                  <Text className='mt-info-value'>{new Date(t.eventDate).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}</Text>
+                  <Text className='mt-info-value'>
+                    {new Date(t.eventDate).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })}
+                  </Text>
                 </View>
                 {t.venue && (
                   <View className='mt-info-row'>
@@ -96,15 +91,15 @@ export default function MyTournamentsPage() {
                 )}
                 {t.grouping && (
                   <View className='mt-info-row'>
-                    <Text className='mt-info-label'>🎯 分组信息</Text>
+                    <Text className='mt-info-label'>🎯 分组说明</Text>
                     <Text className='mt-info-value'>{t.grouping}</Text>
                   </View>
                 )}
                 <View className='mt-info-row'>
-                  <Text className='mt-info-label'>🎾 我的段位</Text>
-                  <Text className='mt-info-value'>{NTRP_LABEL[entry.ntrpSnapshot] || entry.ntrpSnapshot}</Text>
+                  <Text className='mt-info-label'>🎾 报名段位</Text>
+                  <Text className='mt-info-value'>{NTRP_LABEL[entry.ntrpSnapshot] || entry.ntrpSnapshot || '未评定'}</Text>
                 </View>
-                {entry.ranking && (
+                {entry.ranking != null && (
                   <View className='mt-info-row'>
                     <Text className='mt-info-label'>🏅 最终名次</Text>
                     <Text className='mt-info-value' style={{ color: '#1B4332', fontWeight: '700' }}>第 {entry.ranking} 名</Text>
@@ -112,7 +107,9 @@ export default function MyTournamentsPage() {
                 )}
               </View>
 
-              <Text className='mt-enroll-date'>报名时间：{new Date(entry.createdAt).toLocaleDateString('zh-CN')}</Text>
+              <Text className='mt-enroll-date'>
+                报名时间：{new Date(entry.createdAt).toLocaleDateString('zh-CN')}
+              </Text>
             </View>
           )
         })}
