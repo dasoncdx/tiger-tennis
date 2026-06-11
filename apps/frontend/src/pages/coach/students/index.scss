@@ -1,105 +1,238 @@
+.coach-students {
+  background: #F5F5F5;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.list-section-title {
+  display: block;
+  font-size: 24px;
+  font-weight: 700;
+  color: #1A1A1A;
+  margin-bottom: 14px;
+}
+
 .student-item {
   background: white; border-radius: 12px; padding: 14px;
   display: flex; align-items: center; gap: 12px;
-  margin-bottom: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); cursor: pointer;
+  margin-bottom: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer;
 }
 
 .student-avatar {
-  width: 44px; height: 44px; border-radius: 50%;
+  width: 48px; height: 48px; border-radius: 50%;
   background: linear-gradient(135deg, #1B4332, #2D6A4F);
   display: flex; align-items: center; justify-content: center;
-  text { font-size: 22px; font-weight: 700; color: white; }
+  text { font-size: 20px; font-weight: 700; color: white; }
 }
 
 .student-info { flex: 1; }
-.student-name { display: block; font-size: 20px; font-weight: 600; color: var(--color-gray-900); }
-.student-phone { display: block; font-size: 16px; color: var(--color-gray-400); margin-top: 2px; }
-.chevron { color: var(--color-gray-200); font-size: 23px; }
+.student-name { display: block; font-size: 20px; font-weight: 600; color: #1A1A1A; }
+.student-phone { display: block; font-size: 16px; color: #9A9A9A; margin-top: 2px; }
+.chevron { color: #C8C8C8; font-size: 22px; }
 
+/* 详情页顶部 */
 .detail-header {
   background: white; padding: 14px 16px;
   display: flex; align-items: center; gap: 10px;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid #F0F0F0;
   position: sticky; top: 0; z-index: 10;
+  flex-shrink: 0;
 }
 
-.back { font-size: 26px; color: var(--color-primary); cursor: pointer; }
-.detail-name { font-size: 22px; font-weight: 600; color: var(--color-gray-900); }
+.detail-back {
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
 
+.detail-title {
+  font-size: 20px; font-weight: 700; color: #1A1A1A;
+}
+
+/* 4-3: Tab标题字体放大 */
 .detail-tabs {
   display: flex; background: white;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid #F0F0F0; flex-shrink: 0;
 }
 
 .detail-tab {
-  flex: 1; height: 44px; display: flex; align-items: center; justify-content: center;
-  font-size: 18px; font-weight: 500; color: var(--color-gray-400);
+  flex: 1; height: 50px; display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 500; color: #9A9A9A;
   border-bottom: 2px solid transparent; cursor: pointer;
-  &.active { color: var(--color-primary); border-bottom-color: var(--color-primary); font-weight: 600; }
+  &.active { color: #1B4332; border-bottom-color: #1B4332; font-weight: 700; }
 }
 
-.last-eval {
-  background: white; border-radius: 12px; padding: 14px 16px;
-  margin-top: 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+.detail-scroll {
+  flex: 1;
+  overflow-y: auto;
 }
 
-.eval-label { display: block; font-size: 17px; font-weight: 600; color: var(--color-gray-900); margin-bottom: 10px; }
-
-.eval-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
-.eval-key { width: 32px; font-size: 16px; color: var(--color-gray-600); }
-.eval-bar { flex: 1; height: 6px; background: var(--color-gray-100); border-radius: 3px; overflow: hidden; }
-.eval-fill { height: 100%; background: var(--color-primary); border-radius: 3px; }
-.eval-val { font-size: 16px; color: var(--color-gray-400); width: 28px; text-align: right; }
-
-.eval-form { margin-top: 16px; background: white; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
-.form-section-title { display: block; font-size: 20px; font-weight: 600; color: var(--color-gray-900); margin-bottom: 12px; }
-
-.score-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
-.score-label { width: 32px; font-size: 17px; color: var(--color-gray-600); }
-.score-btns { display: flex; gap: 6px; }
-.score-btn {
-  width: 36px; height: 36px; border-radius: 8px;
-  background: var(--color-gray-100); display: flex; align-items: center; justify-content: center; cursor: pointer;
-  text { font-size: 18px; color: var(--color-gray-900); }
-  &.active { background: var(--color-primary); text { color: white; } }
+/* 评估明细 */
+.eval-section {
+  background: white; border-radius: 12px; padding: 16px;
+  margin-top: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
 }
 
-.form-item { margin-top: 12px; }
-.form-label { display: block; font-size: 17px; color: var(--color-gray-600); margin-bottom: 6px; }
-.form-input {
-  width: 100%; height: 44px; background: var(--color-gray-100);
-  border-radius: 10px; padding: 0 12px; font-size: 18px;
+.eval-section-title {
+  display: block; font-size: 19px; font-weight: 700; color: #1A1A1A;
+  margin-bottom: 14px;
 }
 
-.promo-toggle {
+/* 4-5: 五维横排 */
+.scores-row {
+  display: flex; gap: 0; justify-content: space-between;
+}
+
+.score-col {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px;
+}
+
+.score-label-txt {
+  font-size: 14px; color: #9A9A9A; font-weight: 500;
+}
+
+.score-val-txt {
+  font-size: 24px; font-weight: 800; color: #1B4332;
+}
+
+.score-bar-v {
+  width: 6px; height: 48px; background: #F0F0F0; border-radius: 3px;
+  display: flex; align-items: flex-end; overflow: hidden;
+}
+
+.score-bar-fill {
+  width: 100%; background: #1B4332; border-radius: 3px;
+}
+
+.eval-remark {
+  display: block; font-size: 15px; color: #9A9A9A; margin-top: 12px;
+}
+
+/* 评估输入区 */
+.eval-form-card {
+  background: white; border-radius: 12px; padding: 16px;
+  margin-top: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.scores-input-row {
+  display: flex; gap: 4px; justify-content: space-between; margin-bottom: 16px;
+}
+
+.score-input-col {
+  flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px;
+}
+
+.score-input-label {
+  font-size: 14px; color: #4A4A4A; font-weight: 500;
+}
+
+.score-input-btns {
+  display: flex; flex-direction: column; gap: 4px;
+}
+
+.score-dot {
+  width: 28px; height: 28px; border-radius: 50%;
+  background: #F0F0F0;
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+  text { font-size: 13px; color: #4A4A4A; font-weight: 500; }
+  &.active { background: #1B4332; text { color: white; } }
+}
+
+.form-item-row { margin: 12px 0; }
+.form-label-sm { display: block; font-size: 16px; color: #4A4A4A; margin-bottom: 6px; }
+.form-input-sm {
+  width: 100%; height: 46px; background: #F5F5F5;
+  border-radius: 10px; padding: 0 12px; font-size: 16px;
+}
+
+.promo-row {
   display: flex; align-items: center; gap: 10px;
-  margin-top: 14px; cursor: pointer;
-  text { font-size: 18px; color: var(--color-gray-900); }
+  margin: 12px 0; cursor: pointer;
+  text { font-size: 17px; color: #1A1A1A; }
 }
+
+.promo-text { font-size: 17px; color: #1A1A1A; }
 
 .toggle-box {
   width: 22px; height: 22px; border-radius: 6px;
-  border: 2px solid var(--color-border); background: white;
-  &.active { background: var(--color-primary); border-color: var(--color-primary); }
+  border: 2px solid #C8C8C8; background: white;
+  &.active { background: #1B4332; border-color: #1B4332; }
 }
 
-.level-selector { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.level-grid {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;
+}
+
 .level-btn {
-  padding: 6px 12px; border-radius: 8px;
-  background: var(--color-gray-100); cursor: pointer;
-  text { font-size: 17px; color: var(--color-gray-900); }
-  &.active { background: var(--color-primary); text { color: white; } }
+  padding: 7px 14px; border-radius: 20px;
+  background: #F0F0F0; cursor: pointer;
+  text { font-size: 15px; color: #4A4A4A; }
+  &.active { background: #1B4332; text { color: white; } }
 }
 
-.btn-submit {
+/* 4-6: 提交后变为「已提交」 */
+.btn-submit-eval {
+  height: 50px; background: #1B4332; border-radius: 14px;
   display: flex; align-items: center; justify-content: center;
-  height: 46px; background: var(--color-primary); border-radius: 12px;
   margin-top: 16px; cursor: pointer;
-  text { color: white; font-size: 20px; font-weight: 600; }
-  &.disabled { background: var(--color-gray-200); text { color: var(--color-gray-400); } }
+  text { color: white; font-size: 18px; font-weight: 700; }
+  &.submitted { background: #D8F3DC; text { color: #1B4332; } }
 }
 
-.quick-form { margin-top: 16px; }
-.card { background: white; border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+/* 表单卡片（训练/月度） */
+.form-card {
+  background: white; border-radius: 12px; padding: 16px;
+  margin-top: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
 
-.empty { padding: 40px; text-align: center; text { font-size: 17px; color: var(--color-gray-400); } }
+.form-card-title {
+  display: block; font-size: 19px; font-weight: 700; color: #1A1A1A;
+  margin-bottom: 12px;
+}
+
+.form-input-block {
+  width: 100%; height: 50px; background: #F5F5F5;
+  border-radius: 10px; padding: 0 14px; font-size: 17px;
+}
+
+.btn-add {
+  height: 48px; background: #1B4332; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  margin-top: 12px; cursor: pointer;
+  text { color: white; font-size: 17px; font-weight: 600; }
+  &.disabled { background: #C8C8C8; }
+}
+
+/* 5: 历史记录列表 */
+.history-list {
+  margin-top: 16px; margin-bottom: 16px;
+}
+
+.history-title {
+  display: block; font-size: 18px; font-weight: 700; color: #1A1A1A;
+  margin-bottom: 10px;
+}
+
+.history-item {
+  background: white; border-radius: 10px; padding: 12px 14px;
+  display: flex; gap: 12px; margin-bottom: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+  border-left: 3px solid #1B4332;
+}
+
+.history-date {
+  font-size: 14px; color: #9A9A9A; flex-shrink: 0; margin-top: 2px;
+}
+
+.history-body { flex: 1; }
+.history-content { display: block; font-size: 16px; color: #1A1A1A; line-height: 1.5; }
+.history-improve { display: block; font-size: 15px; color: #4A4A4A; margin-top: 4px; line-height: 1.4; }
+
+.pagination-btn {
+  height: 44px; background: #F0F0F0; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; margin-top: 8px;
+  text { font-size: 16px; color: #4A4A4A; }
+}
+
+.empty { padding: 40px; text-align: center; text { font-size: 17px; color: #9A9A9A; } }

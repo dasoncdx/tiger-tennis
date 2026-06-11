@@ -1,15 +1,15 @@
 import TabBar from '../../../components/TabBar'
 import { useState, useEffect } from 'react'
-import { View, Text } from '@tarojs/components'
+import { View, Text, Input } from '@tarojs/components'
 import Taro from '@tarojs/taro'
-import { bookingsApi, notificationsApi } from '../../../services/api'
+import { bookingsApi } from '../../../services/api'
 import { useAuthStore } from '../../../stores/auth'
 import { requireAuth } from '../../../utils/auth'
 import './index.scss'
 
-function formatDateTime(iso: string) {
+function fmt(iso: string) {
   const d = new Date(iso)
-  return `${d.getMonth() + 1}/${d.getDate()} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`
+  return `${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`
 }
 
 export default function CoachHome() {
@@ -17,44 +17,40 @@ export default function CoachHome() {
   const { user } = useAuthStore()
   const [pendingBookings, setPendingBookings] = useState<any[]>([])
   const [todayBookings, setTodayBookings] = useState<any[]>([])
-  const [unread, setUnread] = useState(0)
+
+  // 确认弹窗状态
+  const [confirmModal, setConfirmModal] = useState<{show:boolean;bookingId:string;venue:string}>({show:false,bookingId:'',venue:''})
+  const [confirming, setConfirming] = useState(false)
+
+  function loadPending() {
+    bookingsApi.list({ status: 'PENDING' }).then((d: any) => setPendingBookings(d.list || []))
+  }
 
   useEffect(() => {
     if (!user) return
-    const today = new Date()
-    const startOfDay = new Date(today.setHours(0, 0, 0, 0)).toISOString()
-    const endOfDay = new Date(today.setHours(23, 59, 59, 999)).toISOString()
-
-    bookingsApi.list({ status: 'PENDING' }).then((data: any) => setPendingBookings(data.list || []))
-    bookingsApi.list({ status: 'CONFIRMED' }).then((data: any) => {
-      const now = new Date()
-      const todayStart = new Date(); todayStart.setHours(0, 0, 0, 0)
-      const todayEnd = new Date(); todayEnd.setHours(23, 59, 59, 999)
-      setTodayBookings((data.list || []).filter((b: any) => {
+    loadPending()
+    bookingsApi.list({ status: 'CONFIRMED' }).then((d: any) => {
+      const todayStart = new Date(); todayStart.setHours(0,0,0,0)
+      const todayEnd = new Date(); todayEnd.setHours(23,59,59,999)
+      setTodayBookings((d.list||[]).filter((b:any) => {
         const t = new Date(b.startTime)
         return t >= todayStart && t <= todayEnd
-      }))
+      }).sort((a:any,b:any) => new Date(a.startTime).getTime()-new Date(b.startTime).getTime()))
     })
-    notificationsApi.unreadCount().then((d: any) => setUnread(d.count))
   }, [user])
 
-  async function confirmBooking(id: string) {
-    Taro.showModal({
-      title: '确认预约',
-      editable: true,
-      placeholderText: '填写场地信息（选填）',
-      success: async (res) => {
-        if (res.confirm) {
-          try {
-            await bookingsApi.confirm(id, res.content || undefined)
-            Taro.showToast({ title: '已确认', icon: 'success' })
-            bookingsApi.list({ status: 'PENDING' }).then((data: any) => setPendingBookings(data.list || []))
-          } catch (e: any) {
-            Taro.showToast({ title: e.message || '操作失败', icon: 'none' })
-          }
-        }
-      },
-    })
+  async function doConfirm() {
+    setConfirming(true)
+    try {
+      await bookingsApi.confirm(confirmModal.bookingId, confirmModal.venue || undefined)
+      Taro.showToast({ title: '已确认，场地信息已同步', icon: 'success' })
+      setConfirmModal({ show: false, bookingId: '', venue: '' })
+      loadPending()
+    } catch (e: any) {
+      Taro.showToast({ title: e.message || '操作失败', icon: 'none' })
+    } finally {
+      setConfirming(false)
+    }
   }
 
   async function rejectBooking(id: string) {
@@ -63,52 +59,48 @@ export default function CoachHome() {
       editable: true,
       placeholderText: '请填写拒绝原因（必填）',
       success: async (res) => {
-        if (res.confirm) {
-          if (!res.content) return Taro.showToast({ title: '请填写拒绝原因', icon: 'none' })
-          try {
-            await bookingsApi.reject(id, res.content)
-            Taro.showToast({ title: '已拒绝', icon: 'success' })
-            bookingsApi.list({ status: 'PENDING' }).then((data: any) => setPendingBookings(data.list || []))
-          } catch (e: any) {
-            Taro.showToast({ title: e.message || '操作失败', icon: 'none' })
-          }
+        if (!res.confirm) return
+        if (!res.content) return Taro.showToast({ title: '请填写拒绝原因', icon: 'none' })
+        try {
+          await bookingsApi.reject(id, res.content)
+          Taro.showToast({ title: '已拒绝', icon: 'success' })
+          loadPending()
+        } catch (e: any) {
+          Taro.showToast({ title: e.message || '操作失败', icon: 'none' })
         }
       },
     })
   }
 
   return (
-    <View className='page coach-home'>
+    <View className='coach-home'>
+      {/* 顶部Banner：删除「教练」小字和红点 */}
       <View className='coach-header'>
-        <View>
-          <Text className='coach-welcome'>你好，{user?.name}</Text>
-          <Text className='coach-role'>教练</Text>
-        </View>
-        {unread > 0 && <View className='unread-dot'><Text>{unread}</Text></View>}
+        <Text className='coach-welcome'>你好，{user?.name}</Text>
       </View>
 
       <View className='page-content'>
-        {/* 今日课程 */}
+        {/* 今日课程：完整时间 + 学员/场地右侧对齐 */}
         <View className='section'>
           <View className='section-header'>
             <Text className='section-title'>今日课程</Text>
             <Text className='section-count'>{todayBookings.length} 节</Text>
           </View>
           {todayBookings.length === 0 && <View className='empty'><Text>今日暂无课程</Text></View>}
-          {todayBookings.map((b) => (
-            <View key={b.id} className='today-booking'>
-              <View className='today-time'>
-                <Text>{String(new Date(b.startTime).getHours()).padStart(2, '0')}:{String(new Date(b.startTime).getMinutes()).padStart(2, '0')}</Text>
+          {todayBookings.map(b => (
+            <View key={b.id} className='today-card'>
+              <View className='today-card-left'>
+                <Text className='today-time-range'>{fmt(b.startTime)}–{fmt(b.endTime)}</Text>
               </View>
-              <View className='today-info'>
-                <Text className='today-name'>{b.student?.name}</Text>
+              <View className='today-card-right'>
+                <Text className='today-student'>{b.student?.name}</Text>
                 <Text className='today-venue'>{b.venue || '场地待定'}</Text>
               </View>
             </View>
           ))}
         </View>
 
-        {/* 待处理约课 */}
+        {/* 待处理预约 */}
         <View className='section'>
           <View className='section-header'>
             <Text className='section-title'>待处理预约</Text>
@@ -117,21 +109,55 @@ export default function CoachHome() {
             )}
           </View>
           {pendingBookings.length === 0 && <View className='empty'><Text>暂无待处理预约</Text></View>}
-          {pendingBookings.map((b) => (
+          {pendingBookings.map(b => (
             <View key={b.id} className='pending-card'>
-              <View className='pending-info'>
-                <Text className='pending-name'>{b.student?.name}</Text>
-                <Text className='pending-time'>{formatDateTime(b.startTime)} – {String(new Date(b.endTime).getHours()).padStart(2, '0')}:{String(new Date(b.endTime).getMinutes()).padStart(2, '0')}</Text>
-                {b.remark && <Text className='pending-remark'>备注：{b.remark}</Text>}
-              </View>
+              <Text className='pending-student'>{b.student?.name}</Text>
+              <Text className='pending-time'>
+                {`${new Date(b.startTime).getMonth()+1}月${new Date(b.startTime).getDate()}日 `}
+                {fmt(b.startTime)}–{fmt(b.endTime)}
+              </Text>
+              {b.remark && <Text className='pending-remark'>备注：{b.remark}</Text>}
               <View className='pending-actions'>
-                <View className='btn-confirm' onClick={() => confirmBooking(b.id)}><Text>确认</Text></View>
-                <View className='btn-reject' onClick={() => rejectBooking(b.id)}><Text>拒绝</Text></View>
+                <View className='btn-confirm'
+                  onClick={() => setConfirmModal({ show: true, bookingId: b.id, venue: '' })}>
+                  <Text>确认预约</Text>
+                </View>
+                <View className='btn-reject' onClick={() => rejectBooking(b.id)}>
+                  <Text>拒绝</Text>
+                </View>
               </View>
             </View>
           ))}
         </View>
       </View>
+
+      {/* 确认预约弹窗（填写场地） */}
+      {confirmModal.show && (
+        <View className='modal-mask' onClick={() => setConfirmModal({show:false,bookingId:'',venue:''})}>
+          <View className='confirm-modal' onClick={e => e.stopPropagation()}>
+            <Text className='modal-title'>确认预约</Text>
+            <Text className='modal-label'>上课场地</Text>
+            <Input
+              className='modal-input'
+              placeholder='请填写场地（如：1号球场）'
+              value={confirmModal.venue}
+              onInput={e => setConfirmModal(prev => ({...prev, venue: e.detail.value}))}
+            />
+            <Text className='modal-tip'>场地信息将同步展示给学员</Text>
+            <View className='modal-actions'>
+              <View className='modal-btn-cancel'
+                onClick={() => setConfirmModal({show:false,bookingId:'',venue:''})}>
+                <Text>取消</Text>
+              </View>
+              <View className={`modal-btn-ok ${confirming?'disabled':''}`}
+                onClick={confirming ? undefined : doConfirm}>
+                <Text>{confirming ? '提交中...' : '确认'}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+      )}
+
       <TabBar active='home' role='COACH' />
     </View>
   )
