@@ -214,26 +214,34 @@ export default function AdminStudents() {
           <View className='modal-mask' onClick={() => setShowBindCoach(false)}>
             <View className='bottom-modal' onClick={(e:any) => e.stopPropagation()}>
               <Text className='modal-title'>关联教练</Text>
-              <Text className='modal-tip'>选择要关联的教练（已关联的不会重复添加）</Text>
+              <Text className='modal-tip'>点击教练进行关联/解绑，可多选</Text>
               {allCoaches.map((c: any) => {
                 const bound = linkedCoaches.some((l: any) => l.id === c.id)
                 return (
                   <View key={c.id}
                     className={`template-opt ${bound ? 'selected' : ''}`}
-                    onClick={async () => {
-                      if (bound) {
-                        await studentCoachApi.unbind(detail.id, c.id)
-                      } else {
-                        await studentCoachApi.bind(detail.id, c.id)
+                    onClick={async (e: any) => {
+                      e.stopPropagation()
+                      try {
+                        if (bound) {
+                          await studentCoachApi.unbind(detail.id, c.id)
+                          Taro.showToast({ title: `已解绑 ${c.name}`, icon: 'success' })
+                        } else {
+                          await studentCoachApi.bind(detail.id, c.id)
+                          Taro.showToast({ title: `已关联 ${c.name}`, icon: 'success' })
+                        }
+                        // 刷新已关联列表
+                        const updated: any = await studentCoachApi.getStudentCoaches(detail.id)
+                        setLinkedCoaches(updated || [])
+                      } catch (err: any) {
+                        Taro.showToast({ title: err.message || '操作失败', icon: 'none' })
                       }
-                      studentCoachApi.getStudentCoaches(detail.id).then((d: any) => setLinkedCoaches(d || []))
-                      Taro.showToast({ title: bound ? '已解绑' : '已关联', icon: 'success' })
                     }}>
-                    <Text>{c.name}  {c.specialty ? `· ${c.specialty}` : ''}  {bound ? '✓ 已关联' : ''}</Text>
+                    <Text>{bound ? '✓ ' : ''}{c.name}{c.specialty ? `  ·  ${c.specialty}` : ''}</Text>
                   </View>
                 )
               })}
-              <View className='modal-ok' onClick={() => setShowBindCoach(false)}>
+              <View className='modal-ok' onClick={(e:any) => { e.stopPropagation(); setShowBindCoach(false) }}>
                 <Text>完成</Text>
               </View>
             </View>
