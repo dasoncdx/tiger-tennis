@@ -3,6 +3,7 @@ import { View, Text } from '@tarojs/components'
 import Taro from '@tarojs/taro'
 import { ntrpApi } from '../../../services/api'
 import { requireAuth } from '../../../utils/auth'
+import '../students/index.scss'
 import './index.scss'
 
 const NTRP_LABEL: Record<string, string> = {

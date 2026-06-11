@@ -113,22 +113,30 @@ users.get('/students', authMiddleware, requireRole(Role.ADMIN), async (c) => {
   })
 })
 
-// POST /api/v1/users/students — 管理员直接创建学员
+// POST /api/v1/users/students — 管理员直接创建学员或教练（role参数）
 users.post('/students', authMiddleware, requireRole(Role.ADMIN), async (c) => {
-  const { name, phone, password, remark } = await c.req.json()
+  const { name, phone, password, remark, role: userRole, bio, specialty } = await c.req.json()
   if (!name || !phone || !password) return c.json({ success: false, error: '缺少必填字段' }, 400)
 
   const existing = await prisma.user.findUnique({ where: { phone } })
   if (existing) return c.json({ success: false, error: '该手机号已注册' }, 409)
+
+  const roleToUse = userRole === 'COACH' ? Role.COACH : Role.STUDENT
 
   const user = await prisma.user.create({
     data: {
       name,
       phone,
       password: await bcrypt.hash(password, 10),
-      role: Role.STUDENT,
+      role: roleToUse,
       status: AccountStatus.ACTIVE,
       remark,
+      // 如果是教练，同时创建 CoachProfile
+      ...(roleToUse === Role.COACH && {
+        coachProfile: {
+          create: { specialty: specialty || null, bio: bio || null }
+        }
+      }),
     },
   })
   return c.json({ success: true, data: { id: user.id } }, 201)

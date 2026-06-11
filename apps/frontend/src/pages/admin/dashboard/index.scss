@@ -23,6 +23,10 @@
 .stat-num { display: block; font-size: 34px; font-weight: 700; color: var(--color-primary); }
 .stat-label { display: block; font-size: 14px; color: var(--color-gray-400); margin-top: 4px; }
 
+.menu-section {
+  margin-top: 24px;
+}
+
 .menu-grid {
   display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
   margin-top: 4px;
