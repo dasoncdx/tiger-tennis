@@ -184,6 +184,71 @@ users.get('/students/:id', authMiddleware, requireRole(Role.ADMIN, Role.COACH), 
   })
 })
 
+// ─── 学员-教练关联（必须在 /:id 系列路由之前注册）────────────────
+
+// POST /api/v1/users/student-coach — 绑定学员与教练
+users.post('/student-coach', authMiddleware, requireRole(Role.ADMIN), async (c) => {
+  const { studentId, coachId } = await c.req.json()
+  if (!studentId || !coachId) return c.json({ success: false, error: '缺少参数' }, 400)
+  await (prisma as any).studentCoachRelation.upsert({
+    where: { studentId_coachId: { studentId, coachId } },
+    update: {},
+    create: { studentId, coachId },
+  })
+  return c.json({ success: true, data: { message: '关联成功' } })
+})
+
+// DELETE /api/v1/users/student-coach — 解绑
+users.delete('/student-coach', authMiddleware, requireRole(Role.ADMIN), async (c) => {
+  const { studentId, coachId } = await c.req.json()
+  await (prisma as any).studentCoachRelation.deleteMany({
+    where: { studentId, coachId },
+  })
+  return c.json({ success: true, data: { message: '解绑成功' } })
+})
+
+// GET /api/v1/users/coach-students/:coachId — 教练获取自己的学员
+users.get('/coach-students/:coachId', authMiddleware, async (c) => {
+  const { userId, role } = c.get('user')
+  const coachId = c.req.param('coachId')
+  if (role === Role.COACH && userId !== coachId) {
+    return c.json({ success: false, error: '无权限' }, 403)
+  }
+  const relations = await (prisma as any).studentCoachRelation.findMany({
+    where: { coachId },
+    include: { student: { select: { id: true, name: true, phone: true, status: true } } } as any,
+  })
+  return c.json({ success: true, data: (relations as any[]).map((r: any) => r.student) })
+})
+
+// GET /api/v1/users/student-coaches/:studentId — 学员关联的教练列表
+users.get('/student-coaches/:studentId', authMiddleware, async (c) => {
+  const { userId, role } = c.get('user')
+  const studentId = c.req.param('studentId')
+  if (role === Role.STUDENT && userId !== studentId) {
+    return c.json({ success: false, error: '无权限' }, 403)
+  }
+  const relations = await (prisma as any).studentCoachRelation.findMany({
+    where: { studentId },
+    include: {
+      coach: {
+        select: {
+          id: true,
+          name: true,
+          avatarUrl: true,
+          coachProfile: { select: { specialty: true, bio: true } },
+        },
+      },
+    } as any,
+  })
+  return c.json({ success: true, data: (relations as any[]).map((r: any) => ({
+    id: r.coach.id,
+    name: r.coach.name,
+    avatarUrl: r.coach.avatarUrl,
+    specialty: r.coach.coachProfile?.specialty,
+  })) })
+})
+
 // PATCH /api/v1/users/:id — 编辑用户
 users.patch('/:id', authMiddleware, requireRole(Role.ADMIN), async (c) => {
   const { name, remark } = await c.req.json()
@@ -250,56 +315,3 @@ users.get('/coaches/:id/students', authMiddleware, requireRole(Role.ADMIN, Role.
 })
 
 export default users
-
-// ─── 学员-教练关联（管理员绑定）────────────────
-
-// POST /api/v1/users/student-coach — 绑定学员与教练
-users.post('/student-coach', authMiddleware, requireRole(Role.ADMIN), async (c) => {
-  const { studentId, coachId } = await c.req.json()
-  if (!studentId || !coachId) return c.json({ success: false, error: '缺少参数' }, 400)
-  await (prisma as any).studentCoachRelation.upsert({
-    where: { studentId_coachId: { studentId, coachId } },
-    update: {},
-    create: { studentId, coachId },
-  })
-  return c.json({ success: true, data: { message: '关联成功' } })
-})
-
-// DELETE /api/v1/users/student-coach — 解绑
-users.delete('/student-coach', authMiddleware, requireRole(Role.ADMIN), async (c) => {
-  const { studentId, coachId } = await c.req.json()
-  await (prisma as any).studentCoachRelation.deleteMany({
-    where: { studentId, coachId },
-  })
-  return c.json({ success: true, data: { message: '解绑成功' } })
-})
-
-// GET /api/v1/users/coach-students/:coachId — 教练获取自己的学员
-users.get('/coach-students/:coachId', authMiddleware, async (c) => {
-  const { userId, role } = c.get('user')
-  const coachId = c.req.param('coachId')
-  if (role === Role.COACH && userId !== coachId) {
-    return c.json({ success: false, error: '无权限' }, 403)
-  }
-  const relations = await (prisma as any).studentCoachRelation.findMany({
-    where: { coachId },
-    include: { student: { select: { id: true, name: true, phone: true, status: true } } } as any,
-  })
-  return c.json({ success: true, data: (relations as any[]).map((r: any) => r.student) })
-})
-
-// GET /api/v1/users/student-coaches/:studentId — 学员关联的教练列表
-users.get('/student-coaches/:studentId', authMiddleware, async (c) => {
-  const { userId, role } = c.get('user')
-  const studentId = c.req.param('studentId')
-  if (role === Role.STUDENT && userId !== studentId) {
-    return c.json({ success: false, error: '无权限' }, 403)
-  }
-  const relations = await (prisma as any).studentCoachRelation.findMany({
-    where: { studentId },
-    include: { coach: { select: { id: true, name: true }, include: { coachProfile: true } } } as any,
-  })
-  return c.json({ success: true, data: (relations as any[]).map((r: any) => ({
-    ...r.coach, specialty: r.coach.coachProfile?.specialty
-  })) })
-})
